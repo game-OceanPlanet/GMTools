@@ -14,13 +14,13 @@
         <div :style="{display: 'inline-block', position: 'absolute', margin:'2px 0px 0px 60px'}">
           <Menu mode="horizontal" theme="primary" active-name="1" @on-select="onSelect">
             <div class="layout-nav">
+              <MenuItem name="gmt">
+                <Icon type="ios-home"></Icon>
+                后台管理
+              </MenuItem>
               <MenuItem name="analy">
                 <Icon type="ios-navigate"></Icon>
                 数据分析
-              </MenuItem>
-               <MenuItem name="gmt">
-                <Icon type="ios-home"></Icon>
-                后台管理
               </MenuItem>
               <MenuItem name="activitys">
               <Icon type="ios-person"></Icon>
@@ -52,8 +52,8 @@
   export default {
     data() {
       return {
-        gameName: '貂蝉来了',
-        menuList: this.getAnalyMenuList(),
+        gameName: '海洋星球',
+        menuList: this.getGmtMenuList(),
         isSiderHidden: false
       }
     },

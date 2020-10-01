@@ -6,8 +6,10 @@ import router from './router'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import '@/assets/styles/main.css';
+import md5 from 'js-md5';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.prototype.$md5 = md5;
 
 Vue.use(iView);
 

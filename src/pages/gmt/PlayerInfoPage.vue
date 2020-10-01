@@ -3,196 +3,177 @@
     <RegionSelect ref="regionSelect"></RegionSelect>
     <br>
     <Form :model="formModel" :label-width="80">
-      <FormItem label="服务器">
-        <ZoneSelect v-model="formModel.selectedZoneId"></ZoneSelect>
+      <FormItem label="游戏名称">
+        <ZoneSelect v-model="formModel.zone"></ZoneSelect>
       </FormItem>
-      <FormItem label="玩家名称">
-        <Input v-model="formModel.roleName" placeholder="输入玩家名称..."></Input>
+      <FormItem label="服务器">
+        <ZoneSelect v-model="formModel.zone"></ZoneSelect>
+      </FormItem>
+      <FormItem label="玩家ID">
+        <Input v-model="formModel.roleName" placeholder="输入玩家名称"></Input>
       </FormItem>
       <FormItem>
-        <Button type="primary" icon="ios-search" @click="handleSubmit">查询</Button>
+        <Button type="primary" @click="handleSubmit">查询</Button>
       </FormItem>
+      <ChartTitle text="查询结果"></ChartTitle>
+      <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
-    <Tabs value="baseInfo">
-      <TabPane label="基础信息" name="baseInfo">
-        <Table border :columns="baseInfoColumns" :data="baseInfoRows" :show-header="false"
-               :row-class-name="rowClassName" width="600"></Table>
-      </TabPane>
-      <TabPane label="背包" name="bag">
-        <Table border :columns="propColumns" :data="propRows" :row-class-name="rowClassName" width="330"></Table>
-      </TabPane>
-      <TabPane label="资源" name="foster">
-        <Table border :columns="fosterColumns" :data="fosterRows" :row-class-name="rowClassName" width="752"></Table>
-      </TabPane>
-      <TabPane label="武将" name="pet">
-        <Table border :columns="petColumns" :data="petRows" :row-class-name="rowClassName" width="702"></Table>
-      </TabPane>
-    </Tabs>
   </div>
 </template>
 
 <script>
   import * as services from '@/services'
   import ZoneSelect from '@/components/ZoneSelect'
+  import DatePicker from '@/components/DatePicker'
   import RegionSelect from '@/components/RegionSelect'
-  import moment from "moment";
+  import ChartTitle from '@/components/ChartTitle'
 
   export default {
+    components: {
+      ZoneSelect,
+      DatePicker,
+      RegionSelect,
+      ChartTitle
+    },
+
     data() {
       return {
         formModel: {
-          selectedZoneId: "",
-          roleName: ""
+          zone: '',
+          roleName: '',
+          operate: ''
         },
 
-        baseInfoColumns: [
+        operateList: [],
+
+        tableColumns: [
           {
-            title: "属性",
-            key: "fieldName",
-            width: 180,
-            align: "left"
+            title: '手机号',
+            key: 'roleName',
+            align: 'center'
           },
           {
-            title: "值",
-            key: "fieldValue",
-            align: "left"
+            title: '真实姓名',
+            key: 'operate',
+            align: 'center'
+          },
+          {
+            title: '身份证号',
+            key: 'operate',
+            align: 'center'
+          },
+          {
+            title: '注册时间',
+            key: 'operate',
+            align: 'center'
+          },
+          {
+            title: '角色id',
+            key: 'roleId',
+            align: 'center'
+          },
+          {
+            title: '最近登录',
+            key: 'updateType',
+            align: 'center'
+          },
+          {
+            title: '最近离线',
+            key: 'updateNum',
+            align: 'center'
+          },
+          {
+            title: '累计充值金额',
+            key: 'currentNum',
+            align: 'center'
+          },
+          {
+            title: '累计充值次数',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: 'USDT',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '金币',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '平台币',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '积分',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '我的上级ID',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '直推规模',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '团队规模',
+            key: 'date',
+            align: 'center'
+          },
+          {
+            title: '账号状态',
+            key: 'date',
+            align: 'center'
           }
         ],
-        baseInfoRows: [],
 
-        propColumns: [
-          {
-            title: "名称",
-            key: "name",
-            width: 150,
-            align: "center"
-          },
-          {
-            title: "品质",
-            key: "quality",
-            width: 90,
-            align: "center"
-          },
-          {
-            title: "数目",
-            key: "num",
-            align: "center"
-          }
-        ],
-        propRows: [],
+        tableRows: []
+      }
+    },
 
-        fosterColumns: [
-          {
-            title: "名称",
-            key: "name",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "进阶等级",
-            key: "advanceLv",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "觉醒等级",
-            key: "awakeLv",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "使用属性丹",
-            key: "attrItem",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "技能列表",
-            key: "skills",
-            width: 350,
-            align: "center"
-          }
-        ],
-        fosterRows: [],
-
-        petColumns: [
-          {
-            title: "名称",
-            key: "name",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "品质",
-            key: "quality",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "等级",
-            key: "level",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "进阶次数",
-            key: "advanceNum",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "飞升等级",
-            key: "flyLevel",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "洗练值",
-            key: "washValue",
-            width: 100,
-            align: "center"
-          },
-          {
-            title: "出战位",
-            key: "battleSlot",
-            width: 100,
-            align: "center"
-          }
-        ],
-        petRows: [],
-
-        gotSuccessResult: false
-      };
+    created() {
+      this.fetchOperateList()
     },
 
     methods: {
+      fetchOperateList() {
+        this.operateList = [];
+        for (var key in services.operateMap) {
+          if (services.operateMap.hasOwnProperty(key)) {
+            this.operateList.push({"id": key, "name": services.operateMap[key]})
+          }
+        }
+      },
+
       handleSubmit() {
-        // 服务器id
-        var zoneId = this.formModel.selectedZoneId;
+        var zoneId = this.formModel.zone;
         if (typeof zoneId === 'string') {
-          this.$Message.error("请先选择服务器");
+          this.$Message.error('请先选择服务器');
           return
         }
 
-        // 玩家名称
-        var roleName = this.formModel.roleName.trim();
+        var roleName = this.formModel.roleName;
         if (roleName.length === 0) {
-          this.$Message.error("请正确填入玩家名称");
-          return;
+          this.$Message.error('请正确填入玩家名称');
+          return
         }
 
-        // 先将所有旧数据清空
-        this.baseInfoRows = [];
-        this.propRows = [];
-        this.fosterRows = [];
-        this.petRows = [];
+        var operate = parseInt(this.formModel.operate);
 
         services.getHttpClient().post({
-          url: '/xy/gmt/query_role',
+          url: '/xy/analy/query_role_amount',
           body: {
-            server_id: zoneId,
-            type: 0,  // 按角色名查询
-            role_name: roleName
+            zone: zoneId,
+            role_name: roleName,
+            operate: operate,
+            date: services.getSelectedDate()
           }
         }, (error, response, body) => {
           if (error) {
@@ -205,163 +186,35 @@
             return;
           }
 
-          this.showBaseInfo(body.data.base_msg);
-          this.showBagItemList(body.data.bag_item_msg);
-          this.showFosterList(body.data.foster_msg);
-          this.showPetList(body.data.pet_msg);
-        });
-      },
-
-      showBaseInfo(baseInfo) {
-        this.baseInfoRows = [];
-        if (!baseInfo) {
-          return
-        }
-
-        this.baseInfoRows.push({"fieldName": "id", "fieldValue": baseInfo.id});
-        this.baseInfoRows.push({"fieldName": "名称", "fieldValue": baseInfo.name});
-        this.baseInfoRows.push({"fieldName": "渠道id", "fieldValue": baseInfo.channel_id});
-        this.baseInfoRows.push({"fieldName": "游戏渠道id", "fieldValue": baseInfo.game_channel_id});
-        this.baseInfoRows.push({"fieldName": "平台唯一id", "fieldValue": baseInfo.open_id});
-
-        this.baseInfoRows.push({
-          "fieldName": "何时创角",
-          "fieldValue": moment.unix(baseInfo.create_time).format("YYYY-MM-DD HH:mm:ss")
-        });
-
-        this.baseInfoRows.push({"fieldName": "在线状态", "fieldValue": baseInfo.is_online ? "在线" : "离线"});
-        this.baseInfoRows.push({
-          "fieldName": "最近登录",
-          "fieldValue": moment.unix(baseInfo.last_login_time).format("YYYY-MM-DD HH:mm:ss")
-        });
-        if (!baseInfo.is_online) {
-          this.baseInfoRows.push({
-            "fieldName": "最近离线",
-            "fieldValue": moment.unix(baseInfo.last_logout_time).format("YYYY-MM-DD HH:mm:ss")
-          });
-        }
-
-        var totalOnlineDurationDesc = "";
-        var day = Math.floor(baseInfo.total_online_seconds / (60 * 60 * 24));
-        var hour = Math.floor(baseInfo.total_online_seconds % (60 * 60 * 24) / (60 * 60));
-        var minute = Math.floor(baseInfo.total_online_seconds % (60 * 60) / 60);
-        var second = baseInfo.total_online_seconds % 60;
-        if (day > 0) {
-          totalOnlineDurationDesc = `${day}天${hour}时${minute}分${second}秒`;
-        } else if (hour > 0) {
-          totalOnlineDurationDesc = `${hour}时${minute}分${second}秒`;
-        } else if (minute > 0) {
-          totalOnlineDurationDesc = `${minute}分${second}秒`;
-        } else if (second > 0) {
-          totalOnlineDurationDesc = `${baseInfo.total_online_seconds}秒`;
-        }
-        this.baseInfoRows.push({"fieldName": "历史累计在线时长", "fieldValue": totalOnlineDurationDesc});
-
-        this.baseInfoRows.push({"fieldName": "转生等级", "fieldValue": baseInfo.rebirth_level});
-        this.baseInfoRows.push({"fieldName": "等级", "fieldValue": baseInfo.level});
-        this.baseInfoRows.push({"fieldName": "经验", "fieldValue": baseInfo.exp});
-        this.baseInfoRows.push({"fieldName": "战力", "fieldValue": baseInfo.power});
-        this.baseInfoRows.push({"fieldName": "vip等级", "fieldValue": baseInfo.vip});
-        this.baseInfoRows.push({"fieldName": "vip经验", "fieldValue": baseInfo.vip_exp});
-
-        this.baseInfoRows.push({"fieldName": "累计充值金额(元)", "fieldValue": baseInfo.total_recharge_money});
-        this.baseInfoRows.push({"fieldName": "累计充值次数", "fieldValue": baseInfo.total_recharge_times});
-
-        this.baseInfoRows.push({"fieldName": "元宝", "fieldValue": baseInfo.gold});
-        this.baseInfoRows.push({"fieldName": "绑元", "fieldValue": baseInfo.bind_gold});
-        this.baseInfoRows.push({
-          "fieldName": "银币",
-          "fieldValue": baseInfo.silver >= 100000 ? `${(baseInfo.silver / 10000)}万` : baseInfo.silver
-        });
-
-        this.baseInfoRows.push({
-          "fieldName": "何时解除禁言",
-          "fieldValue": baseInfo.chat_ban_end_time === 0 ? "<未被禁言>" : moment.unix(baseInfo.chat_ban_end_time).format("YYYY-MM-DD HH:mm:ss")
-        });
-        this.baseInfoRows.push({
-          "fieldName": "何时解除封号",
-          "fieldValue": baseInfo.login_ban_end_time === 0 ? "<未被封号>" : moment.unix(baseInfo.login_ban_end_time).format("YYYY-MM-DD HH:mm:ss")
-        });
-
-        this.baseInfoRows.push({
-          "fieldName": "帮会",
-          "fieldValue": baseInfo.guild_name.length === 0 ? "<未加入帮会>" : `${baseInfo.guild_name}（Lv.${baseInfo.guild_level}）`
-        });
-      },
-
-      showBagItemList(bagItemList) {
-        this.propRows = [];
-        this.equipRows = [];
-        if (bagItemList == null) {
-          return;
-        }
-
-        for (var i = 0; i < bagItemList.length; i++) {
-          var bagItem = bagItemList[i];
-
-          var quality = ["白", "绿", "蓝", "紫", "橙", "红", "炫彩"][bagItem.quality];
-          this.propRows.push({"name": bagItem.name, "num": bagItem.num, "quality": quality});
-        }
-      },
-
-      showFosterList(fosterList) {
-        this.fosterRows = [];
-        if (fosterList == null) {
-          return;
-        }
-
-        for (var i = 0; i < fosterList.length; i++) {
-          var foster = fosterList[i];
-          var skills = "";
-          if (foster.skills) {
-            skills = foster.skills.join(',')
+          if (!body.data || body.data.length === 0) {
+            return
           }
 
-          this.fosterRows.push({
-            "name": foster.name,
-            "advanceLv": foster.advance_lv,
-            "awakeLv": foster.awake_lv,
-            "skills": skills,
-            "attrItem": foster.attr_item
-          });
-        }
+          this.fillData(body.data)
+        });
       },
 
-      showPetList(petList) {
-        this.petRows = [];
-        if (petList == null) {
-          return;
-        }
+      fillData(rows) {
+        rows.forEach((row) => {
+          var tableRow = {};
+          tableRow["roleName"] = row.role_name;
+          tableRow["roleId"] = row.role_id;
+          tableRow["operate"] = services.getOperateName(row.operate);
+          tableRow["updateType"] = row.update_type === 1 ? "流入" : "流出";
+          tableRow["updateNum"] = row.update_num;
+          tableRow["currentNum"] = row.current_num;
+          tableRow["date"] = row.date;
 
-        for (var i = 0; i < petList.length; i++) {
-          var pet = petList[i];
-          var quality = ["白", "绿", "蓝", "紫", "橙", "红", "炫彩"][pet.quality];
-          this.petRows.push({
-            "name": pet.name,
-            "quality": quality,
-            "level": pet.level,
-            "advanceNum": pet.advance_num,
-            "flyLevel": pet.fly_level,
-            "washValue": pet.wash_value,
-            "battleSlot": pet.battle_slot === 0 ? "未出战" : pet.battle_slot,
-          });
-        }
+          this.tableRows.push(tableRow);
+        });
       },
 
-      rowClassName(row, index) {
-        return 'table-row';
-      }
-    },
-
-    components: {
-      ZoneSelect,
-      RegionSelect
+      onOperateChanged(value) {
+        this.formModel.operate = value
+      },
     }
-  };
+  }
 </script>
 
-<style>
-  .table-row td {
-    height: 50px;
-  }
+<style scoped>
 </style>
