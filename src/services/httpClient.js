@@ -4,6 +4,7 @@ import {getToken} from "./session";
 var request = require('request')
 
 const loginGmtAddress = "http://www.siychina.com:10088/";
+// const loginGmtAddress = "http://192.168.1.36:10088/";
 
 export const getHttpClient = function () {
   return request.defaults({

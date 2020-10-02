@@ -2,10 +2,8 @@ import Cookies from 'js-cookie'
 
 function LoggedInUser() {
   this.username = '';
-  this.token = '';
-  this.author = 0;
-  this.analyAuthor = 0;
-  this.platforms = [];
+  this.platforms = '';
+  this.authority = 0;
 }
 
 /**
@@ -18,13 +16,11 @@ export const isLoggedIn = function () {
 /**
  * 设置已登录
  */
-export const setLoggedIn = function (username, token, author, analyAuthor, platforms) {
+export const setLoggedIn = function (username, authority, platform) {
   let loggedInUser = new LoggedInUser();
   loggedInUser.username = username;
-  loggedInUser.token = token;
-  loggedInUser.author = author;
-  loggedInUser.analyAuthor = analyAuthor;
-  loggedInUser.platforms = platforms;
+  loggedInUser.platform = platform;
+  loggedInUser.authority = authority;
   Cookies.set('user', loggedInUser, {expires: 0.125});
 };
 
@@ -46,32 +42,13 @@ export const getUser = function () {
  * 用户token
  */
 export const getToken = function () {
-  let user = Cookies.getJSON('user');
-  if (!user) {
-    return ""
-  }
-  return user.token
+  return "";
 };
 
 /**
  * 验证用户所属大区
  */
 export const checkPlatform = function (platform) {
-  let user = Cookies.getJSON('user');
-  if (!user) {
-    return false
-  }
-
-  if (!user.platforms || user.platforms.length === 0) {
-    return true
-  }
-
-  for (let i = 0; i < user.platforms.length; i++) {
-    if (user.platforms[i] === platform) {
-      return true
-    }
-  }
-
   return false
 };
 
@@ -81,14 +58,9 @@ export const checkPlatform = function (platform) {
 export const getUserPlatform = function () {
   let user = Cookies.getJSON('user');
   if (!user) {
-    return 0
+    return false
   }
-
-  if (!user.platforms || user.platforms.length === 0) {
-    return 0
-  }
-
-  return user.platforms[0];
+  return user.platform;
 };
 
 
@@ -100,7 +72,7 @@ export const checkAnalyAuthor = function () {
   if (!user) {
     return false
   }
-  return user.analyAuthor > 0
+  return user.authority > 0
 };
 
 /**
@@ -115,10 +87,10 @@ export const checkGmtAuthor = function (authorLv) {
     return false
   }
 
-  if (user.author === 0) {
+  if (user.authority === 0) {
     return false
   }
 
-  return user.author <= authorLv
+  return user.authority <= authorLv;
 };
 

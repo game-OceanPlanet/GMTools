@@ -95,15 +95,11 @@ export const getGmtMenuList = function () {
       name: '/gmt/player',
       children: [
         {
-          title: '查询',
+          title: '玩家查询',
           name: '/gmt/query_role',
         },
         {
-          title: '金币',
-          name: '/gmt/query_gold',
-        },
-        {
-          title: 'USDT',
+          title: '货币查询',
           name: '/gmt/query_gold',
         },
         // {
@@ -117,6 +113,37 @@ export const getGmtMenuList = function () {
         {
           title: '充值',
           name: '/gmt/recharge',
+        }
+      ]
+    },
+     {
+      title: '配置修改',
+      icon: 'navicon-round',
+      name: '/gmt/notice',
+      children: [
+        {
+          title: '全局配置',
+          name: '/gmt/global_confg',
+        },
+        {
+          title: '鱼配置',
+          name: '/gmt/pet_confg',
+        },
+        {
+          title: '直推手续费',
+          name: '/gmt/tradeCostt_confg',
+        },
+        {
+          title: '直推收益',
+          name: '/gmt/directRate_confg',
+        },
+        {
+          title: '团队收益',
+          name: '/gmt/teamRate_confg',
+        },
+        {
+          title: '注入周期',
+          name: '/gmt/inject_confg',
         }
       ]
     },

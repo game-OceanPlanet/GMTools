@@ -28,6 +28,12 @@ import RechargePage from '@/pages/gmt/RechargePage'
 import PlayerInfoPage from '@/pages/gmt/PlayerInfoPage'
 import GoldUpdatePage from '@/pages/gmt/GoldUpdatePage'
 import ActivityPreViewPage from '@/pages/activitys/ActivityPreViewPage'
+import GlobalConfigPage from '@/pages/gmt/GlobalConfigPage'
+import PetConfigPage from '@/pages/gmt/PetConfigPage'
+import InjectPage from '@/pages/gmt/InjectPage'
+import DirectRatePage from '@/pages/gmt/DirectRatePage'
+import TeamRatePage from '@/pages/gmt/TeamRatePage'
+import TradeCostPage from '@/pages/gmt/TradeCostPage'
 
 Vue.use(Router)
 
@@ -155,6 +161,30 @@ var router = new Router({
         {
           path: '/activitys/active',
           component: ActivityPreViewPage
+        },
+        {
+          path: '/gmt/global_confg',
+          component: GlobalConfigPage
+        },
+        {
+          path: '/gmt/pet_confg',
+          component: PetConfigPage
+        },
+        {
+          path: '/gmt/inject_confg',
+          component: InjectPage
+        },
+        {
+          path: '/gmt/directRate_confg',
+          component: DirectRatePage
+        },
+        {
+          path: '/gmt/teamRate_confg',
+          component: TeamRatePage
+        },
+        {
+          path: '/gmt/tradeCostt_confg',
+          component: TradeCostPage
         },
       ]
     }

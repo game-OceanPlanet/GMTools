@@ -63,14 +63,15 @@
       search() {
         if (!services.checkAnalyAuthor()) {
           this.$Message.error("权限不足,请联系管理员!");
-          return
+          return;
         }
 
         services.getHttpClient().post({
-          url: '/xy/analy/summary',
+          url: '/dragon/summary',
           body: {
-            distinct: services.isFilterPlayerByUid()
-          }
+                username: services.getUser().username,
+                platform: services.getUser().platform
+              },
         }, (error, response, body) => {
           if (error) {
             this.$Message.error(error.toString());
@@ -82,45 +83,45 @@
             return;
           }
 
-          const result = body.data;
+          const result = body.msg;
 
-          this.metrics.historyRegisterNumber.value = result.history_reg;
-          this.metrics.historyRechargeAmount.value = result.history_pay;
-          this.metrics.todayRegisterNumber.value = result.today_reg;
-          this.metrics.todayRechargeAmount.value = result.today_pay;
-          this.metrics.todayRechargePlayerNumber.value = result.today_pay_user;
-          this.metrics.todayActiveNumber.value = result.today_act;
+          this.metrics.historyRegisterNumber.value = result.allCount;
+          // this.metrics.historyRechargeAmount.value = result.history_pay;
+          // this.metrics.todayRegisterNumber.value = result.today_reg;
+          // this.metrics.todayRechargeAmount.value = result.today_pay;
+          // this.metrics.todayRechargePlayerNumber.value = result.today_pay_user;
+          // this.metrics.todayActiveNumber.value = result.today_act;
 
         });
       },
 
       InitZoneIdList() {
-        services.getHttpClient().post({
-          url: '/xy/gmt/query_server_list',
-          body: {
-            include_merged: true
-          }
-        }, (error, response, body) => {
-          if (error) {
-            this.$Message.error(error.toString());
-            return;
-          }
+        // services.getHttpClient().post({
+        //   url: '/xy/gmt/query_server_list',
+        //   body: {
+        //     include_merged: true
+        //   }
+        // }, (error, response, body) => {
+        //   if (error) {
+        //     this.$Message.error(error.toString());
+        //     return;
+        //   }
 
-          if (body.code !== 0) {
-            this.$Message.error(body.msg);
-            return;
-          }
+        //   if (body.code !== 0) {
+        //     this.$Message.error(body.msg);
+        //     return;
+        //   }
 
-          if (!body.data || body.data.length === 0) {
-            return
-          }
+        //   if (!body.data || body.data.length === 0) {
+        //     return
+        //   }
 
-          let zones = [];
-          body.data.forEach((zone) => {
-            zones.push({"id": zone.id, "name": zone.name})
-          });
-          services.saveZoneList(zones);
-        });
+        //   let zones = [];
+        //   body.data.forEach((zone) => {
+        //     zones.push({"id": zone.id, "name": zone.name})
+        //   });
+        //   services.saveZoneList(zones);
+        // });
       },
     }
   }

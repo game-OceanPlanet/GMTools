@@ -131,10 +131,10 @@
     transform: rotate(-90deg);
   }
 
-  .layout-nav {
+  /* .layout-nav {
     width: 235px;
     margin: 0 auto;
     margin-right: 0px;
-  }
+  } */
 
 </style>

@@ -83,9 +83,9 @@ export default {
               url: "/dragon/login",
               body: {
                 username: username,
+                platform: platform,
                 password: password,
                 time: time,
-                platform: platform,
                 sign: sign,
               },
             },
@@ -100,15 +100,12 @@ export default {
                 return;
               }
 
-              // this.onLogin(
-              //   username,
-              //   body.token,
-              //   body.author,
-              //   body.analy_author,
-              //   body.platforms
-              // );
-
-              this.onLogin(username, password, username, username, platforms);
+              let msg = body.msg;
+              if(msg && msg.username){
+                let authority = msg.authority;//权限等级
+                let username = msg.username;//用户账号
+                this.onLogin(username, authority, platform);
+              }
             }
           );
         }
@@ -118,8 +115,8 @@ export default {
     /**
      * 登录成功
      */
-    onLogin(username, token, author, analyAuthor, platforms) {
-      services.setLoggedIn(username, token, author, analyAuthor, platforms);
+    onLogin(username, authority, platform) {
+      services.setLoggedIn(username, authority, platform);
       services.initRegion();
 
       // 从url中的redirect参数取得跳转地址

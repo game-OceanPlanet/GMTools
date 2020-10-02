@@ -45,22 +45,22 @@
   export default {
     data() {
       return {
-        region: services.getSelectedRegion()
+        // region: services.getSelectedRegion()
       }
     },
 
-    watch: {
-      region: function () {
-        // 保存选择的大区
-        services.saveSelectedRegion(this.region);
-        //this.$emit('on-change');
+    // watch: {
+    //   region: function () {
+    //     // 保存选择的大区
+    //     services.saveSelectedRegion(this.region);
+    //     //this.$emit('on-change');
 
-        // 重要，当前页面的内容是旧region的内容，通过强制跳转到页面来达到刷新页面的目的
-        this.$router.push({
-          path: '/gmt/hello'
-        })
-      }
-    },
+    //     // 重要，当前页面的内容是旧region的内容，通过强制跳转到页面来达到刷新页面的目的
+    //     this.$router.push({
+    //       path: '/gmt/hello'
+    //     })
+    //   }
+    // },
 
     methods: {
       checkPlatform(pfId) {
