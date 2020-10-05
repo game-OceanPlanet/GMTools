@@ -33,6 +33,8 @@
         formModel: {
             configName:"Pet"
         },
+        editable:false,
+        editIndex:0,
 
         operateList: [],
 
@@ -40,57 +42,460 @@
           {
             title: '宠物ID',
             key: 'id',
-            align: 'center',
+            align: 'center'
           },
           {
             title: '宠物名称',
             key: 'name',
             align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.name,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.name = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.name,
+                  ),
+              ])
+              }
           },
           {
             title: '等级',
             key: 'level',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.level,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.level = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.level,
+                  ),
+              ])
+              }
           },
           {
             title: '周期',
             key: 'limitTime',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.limitTime,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.limitTime = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.limitTime,
+                  ),
+              ])
+              }
           },
           {
             title: '月化',
             key: 'monthly',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.monthly,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.monthly = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.monthly,
+                  ),
+              ])
+              }
           },
           {
             title: '总产出',
             key: 'produce',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.produce,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.produce = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.produce,
+                  ),
+              ])
+              }
           },
           {
             title: 'U购买需要直推人数',
             key: 'directPerson',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.directPerson,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.directPerson = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.directPerson,
+                  ),
+              ])
+              }
           },
           {
             title: 'U购买需要团队规模',
             key: 'teamPerson',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.teamPerson,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.teamPerson = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.teamPerson,
+                  ),
+              ])
+              }
           },
           {
             title: 'U购买价格',
             key: 'UBuyPrice',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.UBuyPrice,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.UBuyPrice = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.UBuyPrice,
+                  ),
+              ])
+              }
           },
           {
             title: 'U购买限制数量',
             key: 'UBuyLimit',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.UBuyLimit,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.UBuyLimit = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.UBuyLimit,
+                  ),
+              ])
+              }
           },
           {
             title: '购买价格',
             key: 'price',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.price,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.price = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.price,
+                  ),
+              ])
+              }
+          },
+          {
+            title: "操作",
+            key: "action",
+            width: 150,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "warning",
+                      size: "small"
+                    },
+                    style: {
+                      marginRight: "8px"
+                    },
+                    on: {
+                      click: () => {
+                        this.editorItem(params.index);
+                      }
+                    }
+                  },
+                  "编辑"
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "error",
+                      size: "small"
+                    },
+                    on: {
+                      click: () => {
+                        this.onSaveItemHandler(params.index);
+                      }
+                    }
+                  },
+                  "保存"
+                )
+              ]);
+            }
           }
         ],
 
@@ -120,15 +525,12 @@
             return;
           }
 
-          if (!body.msg || !body.msg.value || body.msg.value.length === 0) {
-            return
-          }
-
           this.fillData(body.msg.value);
         });
       },
 
       fillData(rows) {
+        this.tableRows.length = 0;
         rows.forEach((row) => {
           var tableRow = {};
           tableRow["id"] = row.Id;
@@ -144,6 +546,53 @@
           tableRow["price"] = row.Price;
 
           this.tableRows.push(tableRow);
+        });
+      },
+
+      editorItem(index) {
+        this.editIndex = index;
+        this.editable = true;
+      },
+
+      onSaveItemHandler(index){
+        let itemData = this.tableRows[index];
+        if(itemData){
+          this.onSaveSubmit(itemData);
+        }
+        this.editIndex = -1;
+        this.editable = false;
+      },
+
+      onSaveSubmit(itemData) {
+        services.getHttpClient().post({
+          url: '/dragon/fishConfigEdit',
+          body: {
+            username: services.getUser().username,
+            platform: services.getUser().platform,
+            id: itemData.id,
+            name: itemData.name,
+            level: itemData.level,
+            limitTime: itemData.limitTime,
+            monthly: itemData.monthly,
+            produce: itemData.produce,
+            directPerson: itemData.directPerson,
+            teamPerson: itemData.teamPerson,
+            ubuyPrice: itemData.UBuyPrice,
+            ubuyLimit: itemData.UBuyLimit,
+            price: itemData.price
+          }
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code != 0) {
+            this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            return;
+          }
+
+          this.$Message.success('保存成功');
         });
       },
     }

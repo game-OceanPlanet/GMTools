@@ -79,7 +79,7 @@
           }
 
           if (body.code !== 0) {
-            this.$Message.error(body.msg);
+             this.$Message.error("提交失败，请检查配置,错误码："+body.code);
             return;
           }
 

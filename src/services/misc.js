@@ -38,6 +38,67 @@ function initDateRange() {
 	}
 }
 
+//将时间戳转换为2019-01-01格式的显示 
+var tempDate = null;
+export const getFormattedDateString = function (time) {
+  if (time <= 0) {
+    return "";
+  }
+  tempDate = new Date();
+  tempDate.setTime(time);
+  var month = "0" + (tempDate.getMonth() + 1);
+  var day = "0" + tempDate.getDate();
+  var formattedDate = `${tempDate.getFullYear()}-${month.slice(-2, month.length)}-${day.slice(-2, day.length)}`;
+  return formattedDate;
+};
+//将时间戳转换为2019-01-01 09:36:11格式的显示 
+export const getFormattedToDateString = function (time) {
+  if (time <= 0) {
+    return "";
+  }
+  tempDate = new Date();
+  tempDate.setTime(time);
+  var month = "0" + (tempDate.getMonth() + 1);
+  var day = "0" + tempDate.getDate();
+  var hour = tempDate.getHours() > 9 ? tempDate.getHours() : "0" + tempDate.getHours();
+  var minute = tempDate.getMinutes() > 9 ? tempDate.getMinutes() : "0" + tempDate.getMinutes();
+  var second = tempDate.getSeconds() > 9 ? tempDate.getSeconds() : "0" + tempDate.getSeconds();
+  var formattedDate = `${tempDate.getFullYear()}-${month.slice(-2, month.length)}-${day.slice(-2, day.length)}`;
+  formattedDate += " " + hour + ":" + minute + ":" + second;
+  return formattedDate;
+};
+
+/**
+         * 返回不为0的格式
+         */
+        export const formatRemain4 = function(second)
+        {
+            var str = "";
+            var day = Math.floor(second / 60 / 60 / 24);
+            if (day != 0)
+            {
+                str += getZeroize(day) + "天";
+            }
+            var hour = Math.floor(second / 60 / 60) % 24;
+            if (hour != 0)
+            {
+                str += getZeroize(hour) + "时";
+            }
+            var min = Math.floor(second / 60) % 60;
+            if (min != 0)
+            {
+                str += getZeroize(min) + "分";
+            }
+
+            return str;
+        };
+
+        /** 不足两位补0 */
+        export const getZeroize = function(time)
+        {
+            return (time < 10) ? "0" + time : time + "";
+        }
+
 export const setSelectedDateRange = function(from, to) {
 	selectedDateRangeFrom = from;
 	selectedDateRangeTo = to;

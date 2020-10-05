@@ -34,6 +34,9 @@
             configName:"直推收益_DirectRate"
         },
 
+        editable:false,
+        editIndex:0,
+
         operateList: [],
 
         tableColumns: [
@@ -46,11 +49,167 @@
             title: '直推人数',
             key: 'count',
             align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.count,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.count = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.count,
+                  ),
+              ])
+              }
           },
           {
             title: '直推收益',
             key: 'precent',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.precent,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.precent = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.precent,
+                  ),
+              ])
+              }
+          },
+          {
+            title: '描述',
+            key: 'dec',
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.dec,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.dec = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.dec,
+                  ),
+              ])
+              }
+          },
+          {
+            title: "操作",
+            key: "action",
+            width: 150,
+            align: "center",
+            render: (h, params) => {
+              return h("div", [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "warning",
+                      size: "small"
+                    },
+                    style: {
+                      marginRight: "8px"
+                    },
+                    on: {
+                      click: () => {
+                        this.editorItem(params.index);
+                      }
+                    }
+                  },
+                  "编辑"
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "error",
+                      size: "small"
+                    },
+                    on: {
+                      click: () => {
+                        this.onSaveItemHandler(params.index);
+                      }
+                    }
+                  },
+                  "保存"
+                )
+              ]);
+            }
           }
         ],
 
@@ -80,22 +239,61 @@
             return;
           }
 
-          if (!body.msg || !body.msg.value || body.msg.value.length === 0) {
-            return
-          }
-
           this.fillData(body.msg.value);
         });
       },
 
       fillData(rows) {
+        this.tableRows.length = 0;
         rows.forEach((row) => {
           var tableRow = {};
           tableRow["id"] = row.Id;
           tableRow["count"] = row.Count;
           tableRow["precent"] = row.Precent+"%";
+          tableRow["dec"] = row.dec;
 
           this.tableRows.push(tableRow);
+        });
+      },
+
+      editorItem(index) {
+        this.editIndex = index;
+        this.editable = true;
+      },
+
+      onSaveItemHandler(index){
+        let itemData = this.tableRows[index];
+        if(itemData){
+          this.onSaveSubmit(itemData);
+        }
+        this.editIndex = -1;
+        this.editable = false;
+      },
+
+      onSaveSubmit(itemData) {
+        services.getHttpClient().post({
+          url: '/dragon/directRateEdit',
+          body: {
+            username: services.getUser().username,
+            platform: services.getUser().platform,
+            id: itemData.id,
+            param: itemData.param,
+            count: itemData.count,
+            precent: itemData.precent,
+            dec: itemData.dec
+          }
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code != 0) {
+            this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            return;
+          }
+
+          this.$Message.success('保存成功');
         });
       },
     }

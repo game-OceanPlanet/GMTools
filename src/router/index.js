@@ -34,6 +34,10 @@ import InjectPage from '@/pages/gmt/InjectPage'
 import DirectRatePage from '@/pages/gmt/DirectRatePage'
 import TeamRatePage from '@/pages/gmt/TeamRatePage'
 import TradeCostPage from '@/pages/gmt/TradeCostPage'
+import DolpinWaitPage from '@/pages/gmt/DolpinWaitPage'
+import DolpinAIWaitPage from '@/pages/gmt/DolpinAIWaitPage'
+import RechargeVertifyPage from '@/pages/gmt/RechargeVertifyPage'
+import RechargeLogsPage from '@/pages/gmt/RechargeLogsPage'
 
 Vue.use(Router)
 
@@ -185,6 +189,22 @@ var router = new Router({
         {
           path: '/gmt/tradeCostt_confg',
           component: TradeCostPage
+        },
+        {
+          path: '/gmt/dolp_wait',
+          component: DolpinWaitPage
+        },
+        {
+          path: '/gmt/dolpAI_wait',
+          component: DolpinAIWaitPage
+        },
+        {
+          path: '/gmt/recharge_vertify',
+          component: RechargeVertifyPage
+        },
+        {
+          path: '/gmt/recharge_logs',
+          component: RechargeLogsPage
         },
       ]
     }

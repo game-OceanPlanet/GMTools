@@ -113,7 +113,23 @@ export const getGmtMenuList = function () {
         {
           title: '充值',
           name: '/gmt/recharge',
-        }
+        },
+        {
+          title: '充值记录',
+          name: '/gmt/recharge_logs',
+        },
+        {
+          title: '提现提审',
+          name: '/gmt/recharge_vertify',
+        },
+        {
+          title: '排队玩家',
+          name: '/gmt/dolp_wait',
+        },
+        {
+          title: '排队AI',
+          name: '/gmt/dolpAI_wait',
+        },
       ]
     },
      {

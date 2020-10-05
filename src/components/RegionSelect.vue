@@ -46,6 +46,7 @@
     data() {
       return {
         // region: services.getSelectedRegion()
+        region:""
       }
     },
 

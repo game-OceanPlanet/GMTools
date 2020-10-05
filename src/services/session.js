@@ -72,7 +72,7 @@ export const checkAnalyAuthor = function () {
   if (!user) {
     return false
   }
-  return user.authority > 0
+  return user.authority >= 3;
 };
 
 /**

@@ -171,7 +171,7 @@
         //   return
         // }
 
-        // let playerId;
+        // let playerId= 0;
         // let mobile;
         // if(type == "playerId"){
         //   playerId = id;
@@ -198,23 +198,20 @@
             return;
           }
 
-          if (!body.msg || !body.msg.value || body.msg.value.length === 0) {
-            return
-          }
-
           this.fillData(body.msg.value);
         });
       },
 
       fillData(rows) {
+        this.tableRows.length = 0;
         rows.forEach((row) => {
           var tableRow = {};
           tableRow["Mobile"] = row.Mobile;
           tableRow["Name"] = row.Name;
           tableRow["IdNum"] = row.IdNum;
-          tableRow["CreateTime"] = row.CreateTime;
+          tableRow["CreateTime"] = services.getFormattedToDateString(parseInt(row.CreateTime));
           tableRow["PlayerId"] = row.PlayerId;
-          tableRow["LoginTime"] = row.LoginTime;
+          tableRow["LoginTime"] = services.getFormattedToDateString(parseInt(row.LoginTime)  * 1000);
           tableRow["LastLoginTime"] = row.LastLoginTime;
           tableRow["TotalRechargeValue"] = row.TotalRechargeValue;
           tableRow["Diamond"] = row.Diamond;
