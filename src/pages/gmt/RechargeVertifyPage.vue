@@ -22,6 +22,20 @@
       </FormItem>
       <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
+
+    <Modal v-model="showAlert" width="360" class-name="alert-modal">
+      <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>提现审核</span>
+      </p>
+      <div style="text-align:center">
+        <Input v-model="verPasswd" placeholder="请输入审核提现的密码"></Input>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <Button type="primary" style="margin-right: 20px" @click="handleAlertSure">确认</Button>
+        <Button type="error" style="margin-left: 20px" @click="refreshApplyCon">取消</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -47,6 +61,10 @@
           currencyType:1,
           inputVis:false
         },
+
+        showAlert: false,
+        verPasswd:"",
+        currSelectedIndex:0,
 
         operateList: [],
 
@@ -164,8 +182,15 @@
 
     methods: {
 
-        passApply(index){
-            let itemData = this.tableRows[index];
+       handleAlertSure() {
+         this.showAlert = false;
+         let index = this.currSelectedIndex;
+         if(!this.verPasswd){
+            this.$Message.error('请输入审核密码');
+            return;
+         }
+         let pwd = this.verPasswd;
+         let itemData = this.tableRows[index];
             services.getHttpClient().post({
             url: '/dragon/cashOutOrderCheck',
             body: {
@@ -174,7 +199,7 @@
                 id: itemData.Id,
                 playerId: itemData.PlayerId,
                 check: 1,
-                password:"123456"
+                password:pwd
             }
             }, (error, response, body) => {
             if (error) {
@@ -189,10 +214,26 @@
 
             this.$Message.success('通过审核成功');
             });
+      },
+
+        passApply(index){
+          this.showAlert = true;
+          this.currSelectedIndex = index;
         },
 
         refuseApply(index){
-            let itemData = this.tableRows[index];
+            this.showAlert = true;
+          this.currSelectedIndex = index;
+        },
+
+        refreshApplyCon(){
+          this.showAlert = false;
+          let index = this.currSelectedIndex;
+        //  if(!this.verPasswd){
+        //     this.$Message.error('请输入审核密码');
+        //     return;
+        //  }
+          let itemData = this.tableRows[index];
             services.getHttpClient().post({
             url: '/dragon/cashOutOrderCheck',
             body: {
@@ -201,7 +242,7 @@
                 id: itemData.Id,
                 playerId: itemData.PlayerId,
                 check: 0,
-                password:"123456"
+                password:"1"
             }
             }, (error, response, body) => {
             if (error) {

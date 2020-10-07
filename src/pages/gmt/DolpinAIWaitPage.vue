@@ -152,47 +152,50 @@
             //   ])
             //   }
           },
-          {
-            title: '剩余排队时间(分钟)',
-            key: 'LeftTime',
-            align: 'center',
-            render: (h, params) => {
-              let t = this;
-              if(t.editable && t.editIndex == params.index){
-                  return h("div", [
-                  h(
-                    "Input",
-                    {
-                      props: {
-                        type: "text",
-                        size: "small",
-                        value: params.row.leftMini,
+          // {
+          //   title: '剩余排队时间(分钟)',
+          //   key: 'LeftTime',
+          //   align: 'center',
+          //   render: (h, params) => {
+          //     if(params.index != 0){
+          //       return;
+          //     }
+          //     let t = this;
+          //     if(t.editable && t.editIndex == params.index){
+          //         return h("div", [
+          //         h(
+          //           "Input",
+          //           {
+          //             props: {
+          //               type: "text",
+          //               size: "small",
+          //               value: params.row.LeftTime,
                         
-                      },
-                      on: {
-                        'on-change'(event) {
-                          params.row.leftMini = event.target.value;
-                          t.tableRows[parseInt(params.index)] = params.row;
-                        }
-                      }
-                    },
-                  ),
-                ]);
-                return;
-              }
-              return h("div", [
-                h(
-                    "span",
-                    {
-                      style: {
-                        color: "#00"
-                      },
-                    },
-                    params.row.LeftTime,
-                  ),
-              ])
-              }
-          },
+          //             },
+          //             on: {
+          //               'on-change'(event) {
+          //                 params.row.LeftTime = event.target.value;
+          //                 t.tableRows[parseInt(params.index)] = params.row;
+          //               }
+          //             }
+          //           },
+          //         ),
+          //       ]);
+          //       return;
+          //     }
+          //     return h("div", [
+          //       h(
+          //           "span",
+          //           {
+          //             style: {
+          //               color: "#00"
+          //             },
+          //           },
+          //           params.row.LeftTime,
+          //         ),
+          //     ])
+          //     }
+          // },
           {
             title: '等待时间(分钟)',
             key: 'WaitTime',
@@ -346,7 +349,7 @@
             state: itemData.State,
             id:itemData.Id,
             createTime:itemData.CreateTimeMini,
-            waitTime:itemData.WaitTimeMini
+            waitTime:itemData.WaitTime
           }
         }, (error, response, body) => {
           if (error) {
@@ -365,7 +368,8 @@
       },
 
       fillData(rows) {
-          this.tableRows.length = 0;
+          this.tableRows = [];
+          let i = 0;
           rows.forEach((row) => {
           var tableRow = {};
           tableRow["Id"] = row.Id;
@@ -378,19 +382,18 @@
           }
           tableRow["CreateTimeMini"] = row.CreateTime;
           
-          tableRow["EndTime"] = services.getFormattedToDateString(row.EndTime);
-          tableRow["EndTimeMini"] = Math.floor(row.EndTime / 1000) ;
+          tableRow["EndTime"] =  i == 0 ? services.getFormattedToDateString(row.EndTime) : "";
+          tableRow["EndTime2"] = row.EndTime;
           let currTime = new Date().getTime();
-          let leftTime = parseInt(row.EndTime) - currTime;
-          leftTime = leftTime < 0 ? 0 : leftTime;
-          tableRow["LeftTime"] = services.formatRemain4(leftTime / 1000);
-          tableRow["leftMini"] = Math.floor(leftTime / 60 / 1000) ;
+          // let leftTime = parseInt(row.EndTime) - currTime;
+          // leftTime = leftTime < 0 ? 0 : leftTime;
+          // tableRow["LeftTime"] = i == 0? services.formatRemain4(leftTime / 1000) : "";
           tableRow["Mobile"] = row.Mobile;
-          tableRow["WaitTime"] = Math.floor(parseInt(row.WaitTime) / 60 / 1000);
-          tableRow["WaitTimeMini"] = row.WaitTime;
+          tableRow["WaitTime"] = Math.floor(parseInt(row.WaitTime));
           tableRow["State"] = row.State;
           //状态，0排队等待中，1产蛋中,2飞升中，3待孵化，4孵化中，5成为动物待受孕，6受孕中，7挂卖中，8售卖成功结束
           
+          i ++;
           this.tableRows.push(tableRow);
         });
       },
@@ -402,11 +405,7 @@
 
       onSaveItemHandler(index){
         let itemData = this.tableRows[index];
-        let leftTime = parseInt(itemData.leftMini);
-        let currTime = new Date().getTime();
-        itemData.EndTime = currTime + leftTime * 60 * 1000;
-        itemData.EndTime = itemData.EndTime < currTime ? currTime : itemData.EndTime;
-        itemData.WaitTimeMini = parseInt(itemData.WaitTime) * 60 * 1000;
+        itemData.EndTime = itemData.EndTime2
         if(itemData){
           this.onSaveSubmit(itemData);
         }
@@ -434,7 +433,7 @@
         let day = parseInt(this.playerModel.leftDay);
         let hour = parseInt(this.playerModel.leftHour);
         let min = parseInt(this.playerModel.leftMinute);
-        let wait = parseInt(this.playerModel.waitMinute) * 60 * 1000;
+        let wait = parseInt(this.playerModel.waitMinute);
         let curr = new Date().getTime();
         let endTime = curr + day * 24 * 3600 * 1000 + hour * 3600 * 1000 + min * 60 * 1000;
         let Mobile = this.playerModel.Mobile;

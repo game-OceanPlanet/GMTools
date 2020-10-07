@@ -244,6 +244,9 @@
       },
 
       fillData(rows) {
+        rows.sort((row1, row2) => {
+            return row1.Id - row2.Id;
+          });
         this.tableRows.length = 0;
         rows.forEach((row) => {
           var tableRow = {};

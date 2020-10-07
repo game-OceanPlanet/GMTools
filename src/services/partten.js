@@ -31,6 +31,10 @@ export const DOLPHIN_SELL_OUT_GOT_U = 107;
 export const DOLPHIN_BUY_COST_U = 108;
 /** 孵化海豚，消耗U*/
 export const DOLPHIN_HATCH_COST_U = 109;
+/** 提现，消耗u*/
+export const CASH_OUT_COST_U = 110;
+/** 玩家提现被拒绝，返还U和手续费，获得U*/
+export const CASH_OUT_REFUSE_GOT_U = 111;
 
 /** KAD-用金币兑换KAD，得到KAD*/
 export const EXCHANGE_GOT_KAD = 201;
@@ -62,5 +66,10 @@ export const DOLPHIN_FERTILIZE_COST_MONEY = 502;
 /** 签到, 获得海豚金币*/
 export const DOLPHIN_SIGN_IN_GOT_MONEY = 503;
 
+
 /** 加速海豚状态, 消耗加速积分*/
 export const DOLPHIN_SPEED_COST_SPEED_COUNT = 601;
+/** 直推下级购买海豚, 直推用户获得加速积分*/
+export const DOLPHIN_DIRECT_BUY_GOT_SPEED_COUNT = 602;
+/** 非直推下级购买海豚, 团队用户获得加速积分*/
+export const DOLPHIN_TEAM_BUY_GOT_SPEED_COUNT = 603;

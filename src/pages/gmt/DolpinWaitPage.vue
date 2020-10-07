@@ -9,6 +9,20 @@
       </FormItem>
       <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
+
+    <Modal v-model="showAlert" width="360" class-name="alert-modal">
+      <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>危险操作</span>
+      </p>
+      <div style="text-align:center">
+        <p>确认要让所有玩家立即结束排队等待？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <Button type="primary" style="margin-right: 20px" @click="handleAlertSure">确认</Button>
+        <Button type="error" style="margin-left: 20px" @click="showAlert=false">取消</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -32,6 +46,7 @@
 
         editable:false,
         editIndex:0,
+        showAlert: false,
 
         tableColumns: [
           {
@@ -266,6 +281,51 @@
     },
 
     methods: {
+      handleAlertSure(){
+        this.showAlert = false;
+        let datas = this.tableRows;
+        if(datas && datas.length > 0){
+          let len = datas.length;
+          let completeIds = "";
+          for(var i = 0; i < len; i ++){
+            let item = datas[i];
+            if(item.State == 0){
+              if(i == len - 1){
+                completeIds += item.Id + "," + item.PlayerId;
+              } else {
+                completeIds += item.Id + "," + item.PlayerId + ";";
+              }
+            }
+          }
+
+          let curr = new Date().getTime();
+          services.getHttpClient().post({
+            url: '/dragon/dolphinWaitBatchEdit',
+            body: {
+              username: services.getUser().username,
+              platform: services.getUser().platform,
+              idStr: completeIds,
+              waitTime:0,
+              endTime:curr,
+              state:0
+            }
+          }, (error, response, body) => {
+            if (error) {
+              this.$Message.error(error.toString());
+              return;
+            }
+
+            if (body.code != 0) {
+              this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+              return;
+            }
+
+            this.$Message.success('修改成功');
+            this.handleSubmit();
+          });
+        }
+      },
+
       handleSubmit() {
         services.getHttpClient().post({
             url: "/dragon/dolphinWaitList",
@@ -393,47 +453,7 @@
       },
 
       completeSubmit(){
-        let datas = this.tableRows;
-        if(datas && datas.length > 0){
-          let len = datas.length;
-          let completeIds = "";
-          for(var i = 0; i < len; i ++){
-            let item = datas[i];
-            if(item.State == 0){
-              if(i == len - 1){
-                completeIds += item.Id + "," + item.PlayerId;
-              } else {
-                completeIds += item.Id + "," + item.PlayerId + ";";
-              }
-            }
-          }
-
-          let curr = new Date().getTime();
-          services.getHttpClient().post({
-            url: '/dragon/dolphinWaitBatchEdit',
-            body: {
-              username: services.getUser().username,
-              platform: services.getUser().platform,
-              idStr: completeIds,
-              waitTime:0,
-              endTime:curr,
-              state:0
-            }
-          }, (error, response, body) => {
-            if (error) {
-              this.$Message.error(error.toString());
-              return;
-            }
-
-            if (body.code != 0) {
-              this.$Message.error("提交失败，请检查配置,错误码："+body.code);
-              return;
-            }
-
-            this.$Message.success('修改成功');
-            this.handleSubmit();
-          });
-        }
+        this.showAlert = true;
       },
 
     }

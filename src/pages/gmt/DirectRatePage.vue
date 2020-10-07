@@ -249,7 +249,7 @@
           var tableRow = {};
           tableRow["id"] = row.Id;
           tableRow["count"] = row.Count;
-          tableRow["precent"] = row.Precent+"%";
+          tableRow["precent"] = row.Precent;
           tableRow["dec"] = row.dec;
 
           this.tableRows.push(tableRow);
