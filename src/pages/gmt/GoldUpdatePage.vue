@@ -238,7 +238,13 @@
                     msg = "购买海豚"//"购买海豚，消耗U"
                     break;
                 case services.DOLPHIN_HATCH_COST_U:
-                    msg = "孵化"//"孵化海豚，消耗U"
+                    msg = "孵化海豚，消耗U"//"孵化海豚，消耗U"
+                    break;
+                case services.CASH_OUT_COST_U:
+                    msg = "提现，消耗u"//"提现，消耗u"
+                    break;
+                 case services.CASH_OUT_REFUSE_GOT_U:
+                    msg = "提现失败返还U"//"玩家提现被拒绝，返还U和手续费，获得U"
                     break;
                 case services.EXCHANGE_GOT_KAD:
                     msg = "兑换获得KAD"//"KAD-用金币兑换KAD，得到KAD"
@@ -278,7 +284,13 @@
                     msg = "签到"//"签到, 获得海豚金币"
                     break;
                 case services.DOLPHIN_SPEED_COST_SPEED_COUNT:
-                    msg = "加速"//"加速海豚状态, 消耗加速积分"
+                    msg = "直推下级购买海豚, 直推用户获得加速积分"//"直推下级购买海豚, 直推用户获得加速积分"
+                    break;
+                case services.DOLPHIN_DIRECT_BUY_GOT_SPEED_COUNT:
+                    msg = "加速消耗积分"//"加速海豚状态, 消耗加速积分"
+                    break;
+                case services.DOLPHIN_TEAM_BUY_GOT_SPEED_COUNT:
+                    msg = "非直推下级购买海豚, 团队用户获得加速积分"//"非直推下级购买海豚, 团队用户获得加速积分"
                     break;
                 case 1000:
                     msg = "管理后台操作"//"管理后台操作"

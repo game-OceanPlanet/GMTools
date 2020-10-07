@@ -213,6 +213,7 @@
             }
 
             this.$Message.success('通过审核成功');
+            this.handleSubmit();
             });
       },
 
@@ -322,7 +323,7 @@
 
 
       fillData(rows) {
-          this.tableRows.length = 0;
+          this.tableRows = [];
         rows.forEach((row) => {
           var tableRow = {};
           // let moneyType = this.formModel.currencyType;
