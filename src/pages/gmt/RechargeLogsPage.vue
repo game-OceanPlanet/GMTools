@@ -2,7 +2,14 @@
   <div>
     <RegionSelect ref="regionSelect"></RegionSelect>
     <br>
-    <Form :model="formModel" :label-width="80">
+    <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>温馨提示</span>
+      </p>
+      <div style="text-align:center;font-size: 60px">
+        <p>您没有查看权限</p>
+      </div>
+    <Form :model="formModel" :label-width="80" v-show="formModel.isShow">
       <FormItem label="查询类型">
         <RadioGroup v-model="formModel.type" @on-change="onOperateChanged">
         <Radio label="all">全部</Radio>
@@ -40,6 +47,10 @@
       ChartTitle
     },
 
+    created(){
+      this.formModel.isShow = services.checkPayLogsAuthor();
+    },
+
     data() {
       return {
         formModel: {
@@ -47,7 +58,8 @@
           roleId: '',
           currencyType:1,
           changeCount:0,
-          inputVis:true
+          inputVis:true,
+          isShow:false
         },
 
         operateList: [],

@@ -63,6 +63,39 @@ export const getUserPlatform = function () {
   return user.platform;
 };
 
+/**
+ * 检查历史累计收入数据统计权限
+ */
+export const checkPayTotalAuthor = function () {
+  let user = Cookies.getJSON('user');
+  if (!user) {
+    return false
+  }
+  return user.authority >= 3;
+};
+
+/**
+ * 检查用户查看付费数据统计权限
+ */
+export const checkPayPartAuthor = function () {
+  let user = Cookies.getJSON('user');
+  if (!user) {
+    return false
+  }
+  return user.authority >= 3;
+};
+
+/**
+ * 检查用户查看充值记录数据统计权限
+ */
+export const checkPayLogsAuthor = function () {
+  let user = Cookies.getJSON('user');
+  if (!user) {
+    return false
+  }
+  return user.authority >= 3;
+};
+
 
 /**
  * 检查用户查看数据统计权限

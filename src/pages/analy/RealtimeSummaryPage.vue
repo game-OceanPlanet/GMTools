@@ -23,28 +23,50 @@
     },
 
     created() {
-      this.InitZoneIdList();
     },
 
     data() {
       return {
         selectedZoneIdList: [],
 
-        metrics: {
+        metrics: this.getGameTotalData(),
+      }
+    },
+
+    methods: {
+      getGameTotalData(){
+        let isShow = services.checkPayTotalAuthor();
+        if(isShow){
+            return {
+            "historyRegisterNumber": {
+              "title": "历史累计注册",
+              "value": ""
+            },
+            "historyRechargeAmount": {
+              "title": "历史累计收入",
+              "value": ""
+            },
+            "todayRechargeAmount": {
+              "title": "今日收入",
+              "value": ""
+            },
+            "todayRechargePlayerNumber": {
+              "title": "今日付费人数",
+              "value": ""
+            },
+            "todayRegisterNumber": {
+              "title": "今日注册",
+              "value": ""
+            },
+            "todayActiveNumber": {
+              "title": "今日活跃",
+              "value": ""
+            }
+          }
+        } else {
+          return {
           "historyRegisterNumber": {
             "title": "历史累计注册",
-            "value": ""
-          },
-          "historyRechargeAmount": {
-            "title": "历史累计收入",
-            "value": ""
-          },
-          "todayRechargeAmount": {
-            "title": "今日收入",
-            "value": ""
-          },
-          "todayRechargePlayerNumber": {
-            "title": "今日付费人数",
             "value": ""
           },
           "todayRegisterNumber": {
@@ -56,18 +78,24 @@
             "value": ""
           }
         }
-      }
-    },
-
-    methods: {
-      search() {
-        if (!services.checkAnalyAuthor()) {
-          this.$Message.error("权限不足,请联系管理员!");
-          return;
         }
+      },
 
+
+      search() {
+        if(services.checkPayTotalAuthor()){
+          this.getTotalPay();
+        }
+        if(services.checkPayPartAuthor()){
+          this.getAll();
+        }
+        
+        this.getPart();
+      },
+
+      getTotalPay(){
         services.getHttpClient().post({
-          url: '/dragon/summary',
+          url: '/dragon/statisticsSummary',
           body: {
                 username: services.getUser().username,
                 platform: services.getUser().platform
@@ -83,7 +111,49 @@
             return;
           }
 
-          const result = body.msg;
+          this.metrics.historyRegisterNumber.value = result.allCount;
+        });
+      },
+
+      getAll(){
+        services.getHttpClient().post({
+          url: '/dragon/statisticsList',
+          body: {
+                username: services.getUser().username,
+                platform: services.getUser().platform
+              },
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code !== 0) {
+             this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            return;
+          }
+
+          this.metrics.historyRegisterNumber.value = result.allCount;
+        });
+      },
+
+      getPart(){
+        services.getHttpClient().post({
+          url: '/dragon/statisticsSimpleList',
+          body: {
+                username: services.getUser().username,
+                platform: services.getUser().platform
+              },
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code !== 0) {
+             this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            return;
+          }
 
           this.metrics.historyRegisterNumber.value = result.allCount;
           // this.metrics.historyRechargeAmount.value = result.history_pay;
@@ -93,35 +163,6 @@
           // this.metrics.todayActiveNumber.value = result.today_act;
 
         });
-      },
-
-      InitZoneIdList() {
-        // services.getHttpClient().post({
-        //   url: '/xy/gmt/query_server_list',
-        //   body: {
-        //     include_merged: true
-        //   }
-        // }, (error, response, body) => {
-        //   if (error) {
-        //     this.$Message.error(error.toString());
-        //     return;
-        //   }
-
-        //   if (body.code !== 0) {
-        //     this.$Message.error(body.msg);
-        //     return;
-        //   }
-
-        //   if (!body.data || body.data.length === 0) {
-        //     return
-        //   }
-
-        //   let zones = [];
-        //   body.data.forEach((zone) => {
-        //     zones.push({"id": zone.id, "name": zone.name})
-        //   });
-        //   services.saveZoneList(zones);
-        // });
       },
     }
   }

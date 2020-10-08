@@ -4,7 +4,7 @@ import * as services from '@/services'
 import LoginPage from '@/pages/LoginPage'
 import ConsoleLayout from '@/pages/ConsoleLayout'
 import RealtimeSummaryPage from '@/pages/analy/RealtimeSummaryPage'
-import ZoneBasePage from '@/pages/analy/ZoneBasePage'
+import HistorySummarySimplePage from '@/pages/analy/HistorySummarySimplePage'
 import ChannelBasePage from '@/pages/analy/ChannelBasePage'
 import SumBasePage from '@/pages/analy/SumBasePage'
 import ZoneRetainPage from '@/pages/analy/ZoneRetainPage'
@@ -38,6 +38,8 @@ import DolpinWaitPage from '@/pages/gmt/DolpinWaitPage'
 import DolpinAIWaitPage from '@/pages/gmt/DolpinAIWaitPage'
 import RechargeVertifyPage from '@/pages/gmt/RechargeVertifyPage'
 import RechargeLogsPage from '@/pages/gmt/RechargeLogsPage'
+import SpeedPlayerPage from '@/pages/gmt/SpeedPlayerPage'
+import HistorySummaryPage from '@/pages/analy/HistorySummaryPage'
 
 Vue.use(Router)
 
@@ -72,7 +74,7 @@ var router = new Router({
         },
         {
           path: '/base/zone',
-          component: ZoneBasePage
+          component: HistorySummarySimplePage
         },
         {
           path: '/base/channel',
@@ -80,7 +82,7 @@ var router = new Router({
         },
         {
           path: '/base/sum',
-          component: SumBasePage
+          component: HistorySummaryPage
         },
         {
           path: '/retain/zone',
@@ -145,6 +147,10 @@ var router = new Router({
         {
           path: '/gmt/query_role',
           component: PlayerInfoPage
+        },
+        {
+          path: '/gmt/query_speed_role',
+          component: SpeedPlayerPage
         },
         {
           path: '/gmt/query_gold',

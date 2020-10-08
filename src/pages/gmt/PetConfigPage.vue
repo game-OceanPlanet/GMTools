@@ -414,6 +414,47 @@
               }
           },
           {
+            title: 'U购买星级',
+            key: 'UBuyStar',
+            align: 'center',
+            render: (h, params) => {
+              let t = this;
+              if(t.editable && t.editIndex == params.index){
+                  return h("div", [
+                  h(
+                    "Input",
+                    {
+                      props: {
+                        type: "text",
+                        size: "small",
+                        value: params.row.UBuyStar,
+                        
+                      },
+                      on: {
+                        'on-change'(event) {
+                          params.row.UBuyStar = event.target.value;
+                          t.tableRows[parseInt(params.index)] = params.row;
+                        }
+                      }
+                    },
+                  ),
+                ]);
+                return;
+              }
+              return h("div", [
+                h(
+                    "span",
+                    {
+                      style: {
+                        color: "#00"
+                      },
+                    },
+                    params.row.UBuyStar,
+                  ),
+              ])
+              }
+          },
+          {
             title: '购买价格',
             key: 'price',
             align: 'center',
@@ -543,6 +584,7 @@
           tableRow["teamPerson"] = row.TeamPerson;
           tableRow["UBuyPrice"] = row.UbuyPrice;
           tableRow["UBuyLimit"] = row.UbuyLimit;
+          tableRow["UBuyStar"] = ""//row.UbuyPrice;
           tableRow["price"] = row.Price;
 
           this.tableRows.push(tableRow);

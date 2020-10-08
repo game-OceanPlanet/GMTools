@@ -11,11 +11,11 @@ export const getAnalyMenuList = function () {
       name: '/base',
       children: [
         {
-          title: '基础统计',
+          title: '充值统计',
           name: '/base/sum',
         },
         {
-          title: '区服分析',
+          title: '注册活跃',
           name: '/base/zone',
         },
         {
@@ -109,6 +109,10 @@ export const getGmtMenuList = function () {
         {
           title: '封号',
           name: '/gmt/ban/login',
+        },
+        {
+          title: '疑似外挂',
+          name: '/gmt/query_speed_role',
         },
         {
           title: '充值',
