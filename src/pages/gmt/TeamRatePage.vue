@@ -316,7 +316,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error(body.msg);
+            // this.$Message.error(body.msg);
             return;
           }
 

@@ -8,12 +8,15 @@
           <Option v-for="operate in operateList" :key="operate.name" :value="operate.type">{{ operate.name }}</Option>
         </Select>
       </FormItem> -->
-      <FormItem label="玩家id">
-        <Input v-model="formModel.roleId" placeholder="输入玩家ID"></Input>
+      <FormItem label="选择类型">
+        <RadioGroup v-model="formModel.typeSelect">
+         <Radio label="tel">手机号</Radio>
+          <Radio label="playerId">玩家ID</Radio>
+        </RadioGroup>
       </FormItem>
-      <FormItem label="玩家手机号">
-        <Input v-model="formModel.banTel" placeholder="输入玩家手机号"></Input>
-      </FormItem>
+       <FormItem label="输入编号">
+              <Input v-model="formModel.roleId" placeholder="请输入需要封禁的玩家的ID或者手机号"></Input>
+        </FormItem>
       <FormItem label="操作类型">
         <RadioGroup v-model="formModel.type">
           <Radio label="ban">封号</Radio>
@@ -47,25 +50,24 @@
           currencyType:1,
           operate:1,
           banTime:"",
-          banId:"",
-          banTel:""
+          typeSelect: 'tel',
         },
 
         operateList: [],
 
         tableColumns: [
           {
-            title: '玩家ID',
+            title: '被封禁玩家ID',
             key: 'PlayerId',
             align: 'center',
           },
           {
-            title: '手机号',
+            title: '被封封禁手机号',
             key: 'Mobile',
             align: 'center'
           },
           {
-            title: '封禁时间',
+            title: '封禁结束时间',
             key: 'LoginBanTime',
             align: 'center'
           }
@@ -137,7 +139,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            // this.$Message.error("提交失败，请检查配置,错误码："+body.code);
             return;
           }
 
@@ -152,13 +154,10 @@
           tableRow["PlayerId"] = row.PlayerId;
           tableRow["Mobile"] = row.Mobile;
           let banTime;
-          if(parseInt(row.LoginBanTime) == 0){
+          if(parseInt(row.LoginBanTime) == -1){
             banTime = "永久封禁";
           } else {
-            let curr = new Date().getTime();
-            let leftTime = parseInt(row.LoginBanTime) - curr/ 1000;
-            leftTime = leftTime < 0 ? 0 : leftTime;
-            banTime = services.formatRemain4(leftTime);
+            banTime = services.getFormattedToDateString(row.LoginBanTime * 1000);
           }
           tableRow["LoginBanTime"] = banTime;
 
@@ -179,14 +178,22 @@
           bantime = 0;
         }
         let operateTime = parseInt(bantime);
-        let playerId = this.formModel.roleId;
-        let mobile = this.formModel.banTel;
-        if(!playerId){
-          playerId = 0;
+
+        var type = this.formModel.typeSelect;
+        var id = this.formModel.roleId;
+        if (id.length === 0) {
+          this.$Message.error('请正确填入查询编号');
+          return
         }
-        if(!mobile){
-          mobile = 0;
+
+        let playerId = 0;
+        let mobile = 0;
+        if(type == "playerId"){
+          playerId = id;
+        } else if(type == "tel"){
+          mobile = id;
         }
+
         services.getHttpClient().post({
           url: '/dragon/banPlayerEdit',
           body: {
@@ -194,8 +201,8 @@
             platform: services.getUser().platform,
             operateType:operateType,
             operateTime:operateTime,
-            playerId:playerId,
-            mobile:mobile
+             playerId:playerId,
+             mobile:mobile
           }
         }, (error, response, body) => {
           if (error) {
@@ -204,7 +211,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            // this.$Message.error("提交失败，请检查配置,错误码："+body.code);
             return;
           }
 

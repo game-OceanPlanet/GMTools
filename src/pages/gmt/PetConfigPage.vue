@@ -584,7 +584,7 @@
           tableRow["teamPerson"] = row.TeamPerson;
           tableRow["UBuyPrice"] = row.UbuyPrice;
           tableRow["UBuyLimit"] = row.UbuyLimit;
-          tableRow["UBuyStar"] = ""//row.UbuyPrice;
+          tableRow["UBuyStar"] = row.UbuyStar;
           tableRow["price"] = row.Price;
 
           this.tableRows.push(tableRow);
@@ -621,6 +621,7 @@
             teamPerson: itemData.teamPerson,
             ubuyPrice: itemData.UBuyPrice,
             ubuyLimit: itemData.UBuyLimit,
+            ubuyStar: itemData.UBuyStar,
             price: itemData.price
           }
         }, (error, response, body) => {

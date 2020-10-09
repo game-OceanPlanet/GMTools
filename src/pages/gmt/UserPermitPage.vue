@@ -30,7 +30,7 @@
         <Button type="primary" @click="addSubmit('playerModel')">增加</Button>
       </FormItem>
       <Button type="primary" @click="handleSubmit('playerModel')">查询</Button>
-     
+
       <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
   </div>
@@ -85,7 +85,7 @@
                         type: "text",
                         size: "small",
                         value: params.row.CreateTimeMini,
-                        
+
                       },
                       on: {
                         'on-change'(event) {
@@ -126,7 +126,7 @@
             //             type: "text",
             //             size: "small",
             //             value: params.row.EndTime,
-                        
+
             //           },
             //           on: {
             //             'on-change'(event) {
@@ -170,7 +170,7 @@
           //               type: "text",
           //               size: "small",
           //               value: params.row.LeftTime,
-                        
+
           //             },
           //             on: {
           //               'on-change'(event) {
@@ -211,7 +211,7 @@
                         type: "text",
                         size: "small",
                         value: params.row.WaitTime,
-                        
+
                       },
                       on: {
                         'on-change'(event) {
@@ -358,7 +358,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            // this.$Message.error("提交失败，请检查配置,错误码："+body.code);
             return;
           }
 
@@ -381,7 +381,7 @@
               tableRow["CreateTime"] = "";
           }
           tableRow["CreateTimeMini"] = row.CreateTime;
-          
+
           tableRow["EndTime"] =  i == 0 ? services.getFormattedToDateString(row.EndTime) : "";
           tableRow["EndTime2"] = row.EndTime;
           let currTime = new Date().getTime();
@@ -392,7 +392,7 @@
           tableRow["WaitTime"] = Math.floor(parseInt(row.WaitTime));
           tableRow["State"] = row.State;
           //状态，0排队等待中，1产蛋中,2飞升中，3待孵化，4孵化中，5成为动物待受孕，6受孕中，7挂卖中，8售卖成功结束
-          
+
           i ++;
           this.tableRows.push(tableRow);
         });
@@ -488,7 +488,7 @@
           this.handleSubmit();
         });
       },
-      
+
   }
   }
 </script>

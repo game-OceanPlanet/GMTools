@@ -46,38 +46,28 @@
 
         tableColumns: [
           {
-            title: '日期',
+            title: '编号',
+            key: 'PlayerId',
+            align: 'center'
+          },
+          {
+            title: '用户名',
+            key: 'Username',
+            align: 'center'
+          },
+          {
+            title: '权限等级',
+            key: 'Authority',
+            align: 'center'
+          },
+          {
+            title: '创建时间',
             key: 'CreateTime',
             align: 'center'
           },
           {
-            title: '当日总收入U',
-            key: 'Diamond',
-            align: 'center'
-          },
-          {
-            title: '付费人数',
-            key: 'Pay',
-            align: 'center'
-          },
-          {
-            title: '付费人次',
-            key: 'PayCount',
-            align: 'center'
-          },
-          {
-            title: '注册人数',
-            key: 'Register',
-            align: 'center'
-          },
-          {
-            title: '海洋星球活跃人数',
-            key: 'OceanActive',
-            align: 'center'
-          },
-          {
-            title: '深海部落活跃人数',
-            key: 'DeepActive',
+            title: '创建者',
+            key: 'CreateBy',
             align: 'center'
           }
         ],
@@ -90,16 +80,12 @@
     },
 
     methods: {
-
       handleSubmit() {
-
         services.getHttpClient().post({
-            url: "/dragon/statisticsList",
+            url: "/dragon/adminPlayerList",
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
-            page:1,
-            pageSize:500
           }
         }, (error, response, body) => {
           if (error) {
@@ -108,7 +94,7 @@
           }
 
           if (body.code != 0) {
-            // this.$Message.error("查询失败："+body.code);
+            // this.$Message.error(body.msg);
             return;
           }
 
@@ -117,23 +103,17 @@
       },
 
       fillData(rows) {
-        this.tableRows.length = 0;
+        this.tableRows = [];
         rows.forEach((row) => {
           var tableRow = {};
-          tableRow["CreateTime"] = services.getFormattedToDateString(parseInt(row.CreateTime));
-          tableRow["Diamond"] = row.Diamond;
-          tableRow["Pay"] = row.Pay;
-          tableRow["PayCount"] = row.PayCount;
-          tableRow["Register"] = row.Register;
-          tableRow["OceanActive"] = row.OceanActive;
-          tableRow["DeepActive"] = row.DeepActive;
+          tableRow["PlayerId"] = row.PlayerId;
+          tableRow["Username"] = row.Username;
+          tableRow["Authority"] = row.Authority;
+          tableRow["CreateTime"] = services.getFormattedToDateString(row.CreateTime);
+          tableRow["CreateBy"] = row.CreateBy;
 
           this.tableRows.push(tableRow);
         });
-      },
-
-      onOperateChanged(value) {
-        this.formModel.operate = value
       },
     }
   }

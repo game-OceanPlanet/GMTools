@@ -59,7 +59,11 @@
               "value": ""
             },
             "todayActiveNumber": {
-              "title": "今日活跃",
+              "title": "星球活跃",
+              "value": ""
+            },
+            "todayActiveNumber2": {
+              "title": "部落活跃",
               "value": ""
             }
           }
@@ -74,9 +78,13 @@
             "value": ""
           },
           "todayActiveNumber": {
-            "title": "今日活跃",
+            "title": "星球活跃",
             "value": ""
-          }
+          },
+            "todayActiveNumber2": {
+              "title": "部落活跃",
+              "value": ""
+            }
         }
         }
       },
@@ -90,10 +98,63 @@
           this.getAll();
         }
         
+        this.getTotalRegister();
         this.getPart();
       },
 
+      getTotalRegister(){
+        services.getHttpClient().post({
+          url: '/dragon/summary',
+          body: {
+                username: services.getUser().username,
+                platform: services.getUser().platform
+              },
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code !== 0) {
+             this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            return;
+          }
+
+          this.metrics.historyRegisterNumber.value = body.msg.allCount;
+        });
+      },
+
       getTotalPay(){
+        services.getHttpClient().post({
+            url: "/dragon/statisticsList",
+            body: {
+            username: services.getUser().username,
+            platform: services.getUser().platform,
+            page:1,
+            pageSize:1
+          }
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code != 0) {
+            // this.$Message.error("查询失败："+body.code);
+            return;
+          }
+
+          let list = body.msg.value;
+          if(list && list.length > 0){
+            let todayTotalPay = list[0].Diamond;
+            let todayPayCount = list[0].Pay;
+            this.metrics.todayRechargeAmount.value = todayTotalPay;
+            this.metrics.todayRechargePlayerNumber.value = todayPayCount;
+          }
+        });
+      },
+
+      getAll(){
         services.getHttpClient().post({
           url: '/dragon/statisticsSummary',
           body: {
@@ -111,58 +172,46 @@
             return;
           }
 
-          this.metrics.historyRegisterNumber.value = result.allCount;
-        });
-      },
-
-      getAll(){
-        services.getHttpClient().post({
-          url: '/dragon/statisticsList',
-          body: {
-                username: services.getUser().username,
-                platform: services.getUser().platform
-              },
-        }, (error, response, body) => {
-          if (error) {
-            this.$Message.error(error.toString());
-            return;
-          }
-
-          if (body.code !== 0) {
-             this.$Message.error("提交失败，请检查配置,错误码："+body.code);
-            return;
-          }
-
-          this.metrics.historyRegisterNumber.value = result.allCount;
+          this.metrics.historyRechargeAmount.value = body.msg.totalDiamond;
         });
       },
 
       getPart(){
         services.getHttpClient().post({
-          url: '/dragon/statisticsSimpleList',
-          body: {
-                username: services.getUser().username,
-                platform: services.getUser().platform
-              },
+            url: "/dragon/statisticsSimpleList",
+            body: {
+            username: services.getUser().username,
+            platform: services.getUser().platform,
+            page:1,
+            pageSize:1
+          }
         }, (error, response, body) => {
           if (error) {
             this.$Message.error(error.toString());
             return;
           }
 
-          if (body.code !== 0) {
-             this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+          if (body.code != 0) {
+            // this.$Message.error(body.code);
             return;
           }
 
-          this.metrics.historyRegisterNumber.value = result.allCount;
+          let list = body.msg.value;
+          if(list && list.length > 0){
+            let todayRegister = list[0].Register;
+            this.metrics.todayActiveNumber.value = list[0].OceanActive;
+            this.metrics.todayActiveNumber2.value = list[0].DeepActive;
+            this.metrics.todayRegisterNumber.value = todayRegister;
+          }
+        });
+
+          // this.metrics.historyRegisterNumber.value = result.allCount;
           // this.metrics.historyRechargeAmount.value = result.history_pay;
           // this.metrics.todayRegisterNumber.value = result.today_reg;
           // this.metrics.todayRechargeAmount.value = result.today_pay;
           // this.metrics.todayRechargePlayerNumber.value = result.today_pay_user;
           // this.metrics.todayActiveNumber.value = result.today_act;
 
-        });
       },
     }
   }

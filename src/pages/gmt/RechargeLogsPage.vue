@@ -2,13 +2,13 @@
   <div>
     <RegionSelect ref="regionSelect"></RegionSelect>
     <br>
-    <p slot="header" style="color:#f60;text-align:center">
+    <!-- <p slot="header" style="color:#f60;text-align:center">
         <Icon type="information-circled"></Icon>
         <span>温馨提示</span>
       </p>
       <div style="text-align:center;font-size: 60px">
         <p>您没有查看权限</p>
-      </div>
+      </div> -->
     <Form :model="formModel" :label-width="80" v-show="formModel.isShow">
       <FormItem label="查询类型">
         <RadioGroup v-model="formModel.type" @on-change="onOperateChanged">
@@ -48,7 +48,7 @@
     },
 
     created(){
-      this.formModel.isShow = services.checkPayLogsAuthor();
+      // this.formModel.isShow = services.checkPayLogsAuthor();
     },
 
     data() {
@@ -59,7 +59,7 @@
           currencyType:1,
           changeCount:0,
           inputVis:true,
-          isShow:false
+          isShow:true
         },
 
         operateList: [],

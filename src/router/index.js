@@ -5,8 +5,6 @@ import LoginPage from '@/pages/LoginPage'
 import ConsoleLayout from '@/pages/ConsoleLayout'
 import RealtimeSummaryPage from '@/pages/analy/RealtimeSummaryPage'
 import HistorySummarySimplePage from '@/pages/analy/HistorySummarySimplePage'
-import ChannelBasePage from '@/pages/analy/ChannelBasePage'
-import SumBasePage from '@/pages/analy/SumBasePage'
 import ZoneRetainPage from '@/pages/analy/ZoneRetainPage'
 import ChannelRetainPage from '@/pages/analy/ChannelRetainPage'
 import SumRetainPage from '@/pages/analy/SumRetainPage'
@@ -26,6 +24,7 @@ import BanChatPage from '@/pages/gmt/BanChatPage'
 import BanLoginPage from '@/pages/gmt/BanLoginPage'
 import RechargePage from '@/pages/gmt/RechargePage'
 import PlayerInfoPage from '@/pages/gmt/PlayerInfoPage'
+import PlayerTeamPage from '@/pages/gmt/PlayerTeamPage'
 import GoldUpdatePage from '@/pages/gmt/GoldUpdatePage'
 import ActivityPreViewPage from '@/pages/activitys/ActivityPreViewPage'
 import GlobalConfigPage from '@/pages/gmt/GlobalConfigPage'
@@ -40,6 +39,8 @@ import RechargeVertifyPage from '@/pages/gmt/RechargeVertifyPage'
 import RechargeLogsPage from '@/pages/gmt/RechargeLogsPage'
 import SpeedPlayerPage from '@/pages/gmt/SpeedPlayerPage'
 import HistorySummaryPage from '@/pages/analy/HistorySummaryPage'
+import UserPagePage from '@/pages/gmt/UserPage'
+import UserPermitPage from '@/pages/gmt/UserPermitPage'
 
 Vue.use(Router)
 
@@ -75,10 +76,6 @@ var router = new Router({
         {
           path: '/base/zone',
           component: HistorySummarySimplePage
-        },
-        {
-          path: '/base/channel',
-          component: ChannelBasePage
         },
         {
           path: '/base/sum',
@@ -149,6 +146,10 @@ var router = new Router({
           component: PlayerInfoPage
         },
         {
+          path: '/gmt/team_list',
+          component: PlayerTeamPage
+        },
+        {
           path: '/gmt/query_speed_role',
           component: SpeedPlayerPage
         },
@@ -211,6 +212,14 @@ var router = new Router({
         {
           path: '/gmt/recharge_logs',
           component: RechargeLogsPage
+        },
+        {
+          path: '/gmt/user',
+          component: UserPagePage
+        },
+        {
+          path: '/gmt/permit',
+          component: UserPermitPage
         },
       ]
     }

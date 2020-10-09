@@ -126,17 +126,27 @@
             align: 'center'
           },
           {
-            title: '直推规模',
+              title: '我的上级手机号',
+              key: 'SuperMobile',
+              align: 'center'
+            },
+          {
+            title: '直推有效规模',
             key: 'DirectEffectNum',
             align: 'center'
           },
           {
-            title: '激活状态',
+            title: '团队有效规模',
+            key: 'EffectNum',
+            align: 'center'
+          },
+          {
+            title: '激活实名状态',
             key: 'State',
             align: 'center'
           },
           {
-            title: '实名状态',
+            title: '游戏激活状态',
             key: 'GameState',
             align: 'center'
           }
@@ -194,7 +204,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error(body.msg);
+            // this.$Message.error(body.msg);
             return;
           }
 
@@ -203,7 +213,7 @@
       },
 
       fillData(rows) {
-        this.tableRows.length = 0;
+        this.tableRows = [];
         rows.forEach((row) => {
           var tableRow = {};
           tableRow["Mobile"] = row.Mobile;
@@ -222,14 +232,51 @@
           tableRow["DolphinSpeedCount"] = row.DolphinSpeedCount;
           tableRow["DolphinMoney"] = row.DolphinMoney;
           tableRow["SuperPlayerId"] = row.SuperPlayerId;
+          tableRow["SuperMobile"] = row.SuperMobile;
           tableRow["DirectEffectNum"] = row.DirectEffectNum;
-          tableRow["State"] = row.State;
-          tableRow["GameState"] = row.GameState;
+          tableRow["EffectNum"] = row.EffectNum;
+          tableRow["State"] = this.getStateMsg(row.State);
+          tableRow["GameState"] = this.getGameStateMsg(row.GameState);
 
           this.tableRows.push(tableRow);
         });
       },
 
+      getStateMsg(s) {
+            //激活+实名状态,0未实名，1已激活，2已实名
+            let msg;
+            switch (s) {
+                case 0:
+                    msg = "未实名"
+                    break;
+                case 1:
+                    msg = "已激活"
+                    break;
+                case 2:
+                    msg = "已实名"
+                    break;
+            }
+            return msg;
+        },
+      getGameStateMsg(s) {
+            //A游戏激活，2:B游戏激活,所以3表示两个都激活了
+            let msg;
+            switch (s) {
+                case 0:
+                    msg = "未激活"
+                    break;
+                case 1:
+                    msg = "已激活海洋星球"
+                    break;
+                case 2:
+                    msg = "已激活深海部落"
+                    break;
+                case 3:
+                    msg = "都已激活"
+                    break;
+            }
+            return msg;
+        },
       onOperateChanged(value) {
         this.formModel.operate = value
       },

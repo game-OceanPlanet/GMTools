@@ -5,8 +5,8 @@
     <Form :model="formModel" :label-width="80">
       <FormItem label="查询类型">
         <RadioGroup v-model="formModel.type">
+         <Radio label="tel">手机号</Radio>
           <Radio label="playerId">玩家ID</Radio>
-          <Radio label="tel">手机号</Radio>
         </RadioGroup>
       </FormItem>
       <FormItem label="查询编号">
@@ -42,7 +42,7 @@
     data() {
       return {
         formModel: {
-          type: 'playerId',
+          type: 'tel',
           roleId: '',
           currencyType:1
         },
@@ -160,7 +160,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error("查询错误"+body.code);
+            // this.$Message.error("查询错误"+body.code);
             return;
           }
 

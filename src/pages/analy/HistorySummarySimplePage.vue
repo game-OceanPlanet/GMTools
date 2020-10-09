@@ -72,7 +72,6 @@
     },
 
     created() {
-      this.fetchOperateList()
     },
 
     methods: {
@@ -85,7 +84,7 @@
             username: services.getUser().username,
             platform: services.getUser().platform,
             page:1,
-            pageSize:100
+            pageSize:500
           }
         }, (error, response, body) => {
           if (error) {
@@ -94,7 +93,7 @@
           }
 
           if (body.code != 0) {
-            this.$Message.error(body.msg);
+            // this.$Message.error(body.msg);
             return;
           }
 

@@ -24,7 +24,7 @@
               </MenuItem>
               <MenuItem name="activitys">
               <Icon type="ios-person"></Icon>
-                运营活动
+                系统管理
               </MenuItem>
             </div>
           </Menu>
@@ -70,11 +70,17 @@
 
     methods: {
       getAnalyMenuList() {
-        return services.getAnalyMenuList();
+        if(services.checkPayTotalAuthor()){
+          return services.getAnalyMenuList();
+        }
+        return services.getAnalyMenuList2();
       },
 
       getGmtMenuList() {
-        return services.getGmtMenuList();
+        if(services.checkPayTotalAuthor()){
+          return services.getGmtMenuList();
+        }
+        return services.getGmtMenuList2();
       },
       getActivityMenuList(){
         return services.getActivityMenuList();

@@ -3,15 +3,18 @@
     <RegionSelect ref="regionSelect"></RegionSelect>
     <br>
     <Form :model="formModel" :label-width="80">
-      <!-- <FormItem label="查询类型">
+      <FormItem label="查询类型">
         <RadioGroup v-model="formModel.type">
-          <Radio label="playerId">玩家ID</Radio>
-          <Radio label="tel">手机号</Radio>
+          <Radio label="allEffect">所有有效</Radio>
+          <Radio label="ocean">海洋星球有效</Radio>
+          <Radio label="deep">深海部落有效</Radio>
+          <Radio label="notEffect">无效</Radio>
+          <Radio label="all">所有</Radio>
         </RadioGroup>
       </FormItem>
-      <FormItem label="玩家id">
+      <FormItem label="查询编号">
         <Input v-model="formModel.roleId" placeholder="请选择需要查询玩家的ID或者手机号"></Input>
-      </FormItem> -->
+      </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit">查询</Button>
       </FormItem>
@@ -38,8 +41,8 @@
     data() {
       return {
         formModel: {
-          type: 'playerId',
-          roleId: ''
+          type: 'allEffect',
+          roleId: '',
         },
 
         operateList: [],
@@ -126,48 +129,25 @@
             align: 'center'
           },
           {
-            title: '直推规模',
+            title: '直推有效规模',
             key: 'DirectEffectNum',
             align: 'center'
           },
           {
-            title: '激活状态',
+            title: '团队有效规模',
+            key: 'EffectNum',
+            align: 'center'
+          },
+          {
+            title: '激活实名状态',
             key: 'State',
             align: 'center'
           },
           {
-            title: '实名状态',
+            title: '游戏激活状态',
             key: 'GameState',
             align: 'center'
-          },
-          {
-             title: "操作",
-             key: "action",
-             width: 150,
-             align: "center",
-             render: (h, params) => {
-               return h("div", [
-                 h(
-                   "Button",
-                   {
-                     props: {
-                       type: "warning",
-                       size: "small"
-                     },
-                     style: {
-                       marginRight: "8px"
-                     },
-                     on: {
-                       click: () => {
-                         this.onSaveItemHandler(params.index);
-                       }
-                     }
-                   },
-                   "解禁"
-                 )
-               ]);
-             }
-           }
+          }
         ],
 
         tableRows: []
@@ -207,13 +187,35 @@
         //   mobile = id;
         // }
 
+        var type = this.formModel.type;
+        var typeValue = 0;
+        if(type == "allEffect"){
+          typeValue = 0;
+        } else if(type == "ocean"){
+          typeValue = 1;
+        }else if(type == "deep"){
+          typeValue = 2;
+        }else if(type == "notEffect"){
+          typeValue = 3;
+        }else if(type == "all"){
+           typeValue = 4;
+         }
+
+      var id = this.formModel.roleId;
+       if (id.length === 0) {
+         this.$Message.error('请正确填入查询编号');
+         return
+       }
+
         services.getHttpClient().post({
-            url: "/dragon/speedPlayerList",
+            url: "/dragon/teamPlayerList",
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
             page:1,
-            pageSize:100
+            pageSize:100,
+            type:typeValue,
+            roleId:id
           }
         }, (error, response, body) => {
           if (error) {
@@ -251,45 +253,49 @@
           tableRow["DolphinMoney"] = row.DolphinMoney;
           tableRow["SuperPlayerId"] = row.SuperPlayerId;
           tableRow["DirectEffectNum"] = row.DirectEffectNum;
-          tableRow["State"] = row.State;
-          tableRow["GameState"] = row.GameState;
+          tableRow["EffectNum"] = row.EffectNum;
+          tableRow["State"] = this.getStateMsg(row.State);
+          tableRow["GameState"] = this.getGameStateMsg(row.GameState);
 
           this.tableRows.push(tableRow);
-
         });
       },
-      onSaveItemHandler(index){
-              let itemData = this.tableRows[index];
-              if(itemData){
-                this.onSaveSubmit(itemData);
-              }
-              this.editIndex = -1;
-              this.editable = false;
-            },
 
-            onSaveSubmit(itemData) {
-              services.getHttpClient().post({
-                url: '/dragon/speedPlayerEdit',
-                body: {
-                  username: services.getUser().username,
-                  platform: services.getUser().platform,
-                  mobile: itemData.Mobile
-                }
-              }, (error, response, body) => {
-                if (error) {
-                  this.$Message.error(error.toString());
-                  return;
-                }
-
-                if (body.code != 0) {
-                  this.$Message.error("提交失败，请检查配置,错误码："+body.code);
-                  return;
-                }
-
-                this.$Message.success('保存成功');
-                this.handleSubmit();
-              });
-      },
+      getStateMsg(s) {
+            //激活+实名状态,0未实名，1已激活，2已实名
+            let msg;
+            switch (s) {
+                case 0:
+                    msg = "未实名"
+                    break;
+                case 1:
+                    msg = "已激活"
+                    break;
+                case 2:
+                    msg = "已实名"
+                    break;
+            }
+            return msg;
+        },
+      getGameStateMsg(s) {
+            //A游戏激活，2:B游戏激活,所以3表示两个都激活了
+            let msg;
+            switch (s) {
+                case 0:
+                    msg = "未激活"
+                    break;
+                case 1:
+                    msg = "已激活海洋星球"
+                    break;
+                case 2:
+                    msg = "已激活深海部落"
+                    break;
+                case 3:
+                    msg = "都已激活"
+                    break;
+            }
+            return msg;
+        },
       onOperateChanged(value) {
         this.formModel.operate = value
       },
