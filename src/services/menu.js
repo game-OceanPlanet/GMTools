@@ -56,6 +56,14 @@ export const getGmtMenuList = function () {
           name: '/gmt/query_role',
         },
         {
+          title: '实名玩家查询',
+          name: '/gmt/query_real_role',
+        },
+        {
+          title: '添加实名玩家',
+          name: '/gmt/add_real_role',
+        },
+        {
           title: '直推列表',
           name: '/gmt/team_list',
         },
@@ -137,6 +145,14 @@ export const getGmtMenuList2 = function () {
         {
           title: '玩家查询',
           name: '/gmt/query_role',
+        },
+        {
+          title: '实名玩家查询',
+          name: '/gmt/query_real_role',
+        },
+        {
+          title: '添加实名玩家',
+          name: '/gmt/add_real_role',
         },
         {
           title: '直推列表',

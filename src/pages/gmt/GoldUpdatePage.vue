@@ -284,10 +284,10 @@
                     msg = "签到"//"签到, 获得海豚金币"
                     break;
                 case services.DOLPHIN_SPEED_COST_SPEED_COUNT:
-                    msg = "直推下级购买海豚, 直推用户获得加速积分"//"直推下级购买海豚, 直推用户获得加速积分"
+                    msg = "加速海豚状态, 消耗加速积分"//"直推下级购买海豚, 直推用户获得加速积分"
                     break;
                 case services.DOLPHIN_DIRECT_BUY_GOT_SPEED_COUNT:
-                    msg = "加速消耗积分"//"加速海豚状态, 消耗加速积分"
+                    msg = "直推下级购买海豚, 直推用户获得加速积分"//"加速海豚状态, 消耗加速积分"
                     break;
                 case services.DOLPHIN_TEAM_BUY_GOT_SPEED_COUNT:
                     msg = "非直推下级购买海豚, 团队用户获得加速积分"//"非直推下级购买海豚, 团队用户获得加速积分"

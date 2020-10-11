@@ -379,6 +379,11 @@
       },
 
       fillData(rows) {
+        if(rows && rows.length > 0){
+          rows.sort((a, b)=>{
+             return parseInt(a.CreateTime) - parseInt(b.CreateTime);
+          })
+        }
           this.tableRows.length = 0;
         rows.forEach((row) => {
           var tableRow = {};

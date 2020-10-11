@@ -3,7 +3,7 @@
     <RegionSelect ref="regionSelect"></RegionSelect>
     <br>
     <Form :model="formModel" :label-width="80">
-      <!-- <FormItem label="查询类型">
+      <FormItem label="查询类型">
         <RadioGroup v-model="formModel.type">
           <Radio label="playerId">玩家ID</Radio>
           <Radio label="tel">手机号</Radio>
@@ -11,9 +11,10 @@
       </FormItem>
       <FormItem label="玩家id">
         <Input v-model="formModel.roleId" placeholder="请选择需要查询玩家的ID或者手机号"></Input>
-      </FormItem> -->
+      </FormItem>
       <FormItem>
-        <Button type="primary" @click="handleSubmit">查询</Button>
+        <Button type="primary" @click="handleSubmit2">指定玩家</Button>
+        <Button type="primary" @click="handleSubmit">全部玩家</Button>
       </FormItem>
       <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
@@ -38,7 +39,7 @@
     data() {
       return {
         formModel: {
-          type: 'playerId',
+          type: 'tel',
           roleId: ''
         },
 
@@ -195,7 +196,7 @@
             username: services.getUser().username,
             platform: services.getUser().platform,
             page:1,
-            pageSize:100
+            pageSize:500
           }
         }, (error, response, body) => {
           if (error) {
@@ -242,6 +243,34 @@
         });
       },
 
+      filldata2(row){
+        this.tableRows = [];
+        var tableRow = {};
+          tableRow["Mobile"] = row.Mobile;
+          tableRow["Name"] = row.Name;
+          tableRow["IdNum"] = row.IdNum;
+          tableRow["CreateTime"] = services.getFormattedToDateString(parseInt(row.CreateTime));
+          tableRow["PlayerId"] = row.PlayerId;
+          tableRow["LoginTime"] = services.getFormattedToDateString(parseInt(row.LoginTime)  * 1000);
+          tableRow["LastLoginTime"] = row.LastLoginTime;
+          tableRow["TotalRechargeValue"] = row.TotalRechargeValue;
+          tableRow["Diamond"] = row.Diamond;
+          tableRow["Money"] = row.Money;
+          tableRow["KAD"] = row.KAD;
+          tableRow["InviteCode"] = row.InviteCode;
+          tableRow["KeyCount"] = row.KeyCount;
+          tableRow["DolphinSpeedCount"] = row.DolphinSpeedCount;
+          tableRow["DolphinMoney"] = row.DolphinMoney;
+          tableRow["SuperPlayerId"] = row.SuperPlayerId;
+          tableRow["SuperMobile"] = row.SuperMobile;
+          tableRow["DirectEffectNum"] = row.DirectEffectNum;
+          tableRow["EffectNum"] = row.EffectNum;
+          tableRow["State"] = this.getStateMsg(row.State);
+          tableRow["GameState"] = this.getGameStateMsg(row.GameState);
+
+          this.tableRows.push(tableRow);
+      },
+
       getStateMsg(s) {
             //激活+实名状态,0未实名，1已激活，2已实名
             let msg;
@@ -279,6 +308,47 @@
         },
       onOperateChanged(value) {
         this.formModel.operate = value
+      },
+
+      handleSubmit2() {
+        var roleId = this.formModel.roleId;
+
+       if (roleId.length === 0) {
+          this.$Message.error('请正确填入查询编号');
+          return
+        }
+
+        // let id;
+        // let playerId= 0;
+        // let mobile;
+        // if(type == "playerId"){
+        //   playerId = id;
+        //   id = playerId;
+        // } else if(type == "tel"){
+        //   mobile = id;
+        //   id = mobile;
+        // }
+
+        services.getHttpClient().post({
+            url: "/dragon/playerInfo",
+            body: {
+            username: services.getUser().username,
+            platform: services.getUser().platform,
+            roleId:roleId
+          }
+        }, (error, response, body) => {
+          if (error) {
+            this.$Message.error(error.toString());
+            return;
+          }
+
+          if (body.code != 0) {
+            // this.$Message.error(body.msg);
+            return;
+          }
+
+          this.filldata2(body.msg);
+        });
       },
     }
   }

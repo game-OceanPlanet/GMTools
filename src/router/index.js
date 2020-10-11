@@ -41,6 +41,8 @@ import SpeedPlayerPage from '@/pages/gmt/SpeedPlayerPage'
 import HistorySummaryPage from '@/pages/analy/HistorySummaryPage'
 import UserPagePage from '@/pages/gmt/UserPage'
 import UserPermitPage from '@/pages/gmt/UserPermitPage'
+import RealPlayerInfoPage from '@/pages/gmt/RealPlayerInfoPage'
+import RealPlayerAddPage from '@/pages/gmt/RealPlayerAddPage'
 
 Vue.use(Router)
 
@@ -144,6 +146,14 @@ var router = new Router({
         {
           path: '/gmt/query_role',
           component: PlayerInfoPage
+        },
+        {
+          path: '/gmt/query_real_role',
+          component: RealPlayerInfoPage
+        },
+        {
+          path: '/gmt/add_real_role',
+          component: RealPlayerAddPage
         },
         {
           path: '/gmt/team_list',

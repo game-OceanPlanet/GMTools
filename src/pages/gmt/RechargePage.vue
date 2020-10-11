@@ -123,7 +123,7 @@
       },
       fetchOperateList() {
         this.operateList = [];
-        let moneyNames = ["金币","USDT","KAD","KEY","购买名额","加速积分","海豚金币"];
+        let moneyNames = ["金币","USDT","KAD","KEY","购买名额","加速积分","海豚金币","未开发","未开发","未开发"];
         for(var i = 0; i < moneyNames.length; i ++){
           this.operateList.push({"name": moneyNames[i], "type": i + 1})      
         }
