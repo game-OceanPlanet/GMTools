@@ -25,6 +25,10 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
+       <FormItem prop="verifyCode">
+        <Input type="text" v-model="playerModel.verifyCode" placeholder="短信验证码">
+        </Input>
+      </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit2">发送验证码</Button>
       </FormItem>
@@ -53,7 +57,8 @@
           Mobile: "",
           IdNum: "",
           Name: "",
-          RoleId:""
+          RoleId:"",
+          verifyCode:""
         },
 
       }
@@ -85,8 +90,8 @@
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
-            mobile:name,
-            name:mobile,
+            mobile:mobile,
+            name:name,
             idNum:idnum
           }
         }, (error, response, body) => {
@@ -99,7 +104,7 @@
             this.$Message.error("添加失败");
             return;
           }
-        this.$Message.sucess("添加成功");
+        this.$Message.success("添加成功");
         });
       },
 
@@ -111,7 +116,7 @@
               return;
           }
         services.getHttpClient().post({
-            url: "/dragon/realNamePlayerAdd",
+            url: "/dragon/verifyCodeSend",
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
@@ -127,7 +132,8 @@
             this.$Message.error("发送失败");
             return;
           }
-        this.$Message.sucess("发送成功");
+          this.playerModel.verifyCode = body.msg.verifyCode;
+        this.$Message.success("发送成功");
         });
       }
       

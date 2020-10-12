@@ -54,6 +54,10 @@
               "title": "今日付费人数",
               "value": ""
             },
+            "todayRechargeCount": {
+              "title": "今日付费人次",
+              "value": ""
+            },
             "todayRegisterNumber": {
               "title": "今日注册",
               "value": ""
@@ -148,8 +152,10 @@
           if(list && list.length > 0){
             let todayTotalPay = list[0].Diamond;
             let todayPayCount = list[0].Pay;
+            let todayPayPre = list[0].PayCount;
             this.metrics.todayRechargeAmount.value = todayTotalPay;
             this.metrics.todayRechargePlayerNumber.value = todayPayCount;
+            this.metrics.todayRechargeCount.value = todayPayPre;
           }
         });
       },
