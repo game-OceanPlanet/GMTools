@@ -20,6 +20,20 @@
       </FormItem>
       <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
+    <br>
+    <Row style="text-align: center">
+        <Page
+          ref="pageView"
+          :page-size-opts="this.pageModel.pageNums"
+          :total="this.pageModel.totalCount"
+          :current="this.pageModel.currentPage"
+          :page-size="this.pageModel.pageCount"
+          placement="top"
+          @on-change="onPageChange()"
+          @on-page-size-change="onPageChange()"
+          show-sizer
+        />
+    </Row>
   </div>
 </template>
 
@@ -40,6 +54,13 @@
 
     data() {
       return {
+        pageModel: {
+          totalCount: 100,
+          pageCount: 20,
+          currentPage: 1,
+          pageNums: [20, 30, 50, 80, 100]
+        },
+
         formModel: {
           type: 'allEffect',
           roleId: '',
@@ -159,6 +180,12 @@
     },
 
     methods: {
+      onPageChange() {
+        this.pageModel.currentPage = this.$refs.pageView.currentPage;
+        this.pageModel.pageCount = this.$refs.pageView.currentPageSize;
+        this.handleSubmit();
+      },
+
       onOperateChanged(value) {
         this.formModel.currencyType = value
       },
@@ -212,8 +239,8 @@
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
-            page:1,
-            pageSize:100,
+            page:this.pageModel.currentPage,
+            pageSize:this.pageModel.pageCount,
             type:typeValue,
             roleId:id
           }

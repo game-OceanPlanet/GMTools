@@ -65,6 +65,16 @@
             key: 'PayCount',
             align: 'center'
           },
+           {
+            title: '提现总额',
+            key: 'CashOutDiamond',
+            align: 'center'
+          },
+          {
+            title: '实际提现手续费',
+            key: 'CashOutFee',
+            align: 'center'
+          },
           {
             title: '注册人数',
             key: 'Register',
@@ -99,7 +109,7 @@
             username: services.getUser().username,
             platform: services.getUser().platform,
             page:1,
-            pageSize:500
+            pageSize:20
           }
         }, (error, response, body) => {
           if (error) {
@@ -127,6 +137,8 @@
           tableRow["Register"] = row.Register;
           tableRow["OceanActive"] = row.OceanActive;
           tableRow["DeepActive"] = row.DeepActive;
+           tableRow["CashOutDiamond"] = row.CashOutDiamond;
+          tableRow["CashOutFee"] = row.CashOutFee;
 
           this.tableRows.push(tableRow);
         });

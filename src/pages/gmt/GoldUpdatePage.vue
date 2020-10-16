@@ -149,7 +149,7 @@
             username: services.getUser().username,
             platform: services.getUser().platform,
             page:1,
-            pageSize:100,
+            pageSize:30,
             currencyType:moneyType,
             playerId:playerId,
             mobile:mobile

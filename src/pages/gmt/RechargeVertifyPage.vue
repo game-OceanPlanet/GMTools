@@ -36,6 +36,20 @@
         <Button type="error" style="margin-left: 20px" @click="refreshApplyCon">取消</Button>
       </div>
     </Modal>
+     <br>
+    <Row style="text-align: center">
+        <Page
+          ref="pageView"
+          :page-size-opts="this.pageModel.pageNums"
+          :total="this.pageModel.totalCount"
+          :current="this.pageModel.currentPage"
+          :page-size="this.pageModel.pageCount"
+          placement="top"
+          @on-change="onPageChange()"
+          @on-page-size-change="onPageChange()"
+          show-sizer
+        />
+    </Row>
   </div>
 </template>
 
@@ -55,6 +69,13 @@
 
     data() {
       return {
+         pageModel: {
+          totalCount: 100,
+          pageCount: 20,
+          currentPage: 1,
+          pageNums: [20, 30, 50, 80, 100]
+        },
+
         formModel: {
           type: 'playerId',
           roleId: '',
@@ -181,6 +202,12 @@
     },
 
     methods: {
+      onPageChange() {
+        this.pageModel.currentPage = this.$refs.pageView.currentPage;
+        this.pageModel.pageCount = this.$refs.pageView.currentPageSize;
+        this.handleSubmit();
+      },
+
 
        handleAlertSure() {
          this.showAlert = false;
@@ -299,8 +326,8 @@
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
-            page:1,
-            pageSize:100,
+            page:this.pageModel.currentPage,
+            pageSize:this.pageModel.pageCount,
             type:moneyType,
             playerId:playerId,
             mobile:mobile
@@ -338,10 +365,22 @@
           tableRow["Hash"] = row.Hash;
           tableRow["CheckTime"] = services.getFormattedToDateString(row.CheckTime);
           tableRow["CreateTime"] = services.getFormattedToDateString(row.CreateTime);
-          tableRow["State"] = row.State;
+          tableRow["State"] = this.getState(row.State);//0提交成功待审核，2拒绝，3审核通过
 
           this.tableRows.push(tableRow);
         });
+      },
+
+      getState(s){
+        switch(s){
+          case 0:
+            return "待审核";
+          case 2:
+            return "拒绝";
+          case 3:
+            return "审核通过";
+        }
+        return s;
       },
 
       getType(s) {

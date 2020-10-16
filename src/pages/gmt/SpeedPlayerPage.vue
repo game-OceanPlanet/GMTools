@@ -213,7 +213,7 @@
             username: services.getUser().username,
             platform: services.getUser().platform,
             page:1,
-            pageSize:100
+            pageSize:30
           }
         }, (error, response, body) => {
           if (error) {

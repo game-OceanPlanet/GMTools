@@ -30,6 +30,20 @@
        <br>
       <Table border :columns="tableColumns" :data="tableRows"></Table>
     </Form>
+    <br>
+    <Row style="text-align: center">
+        <Page
+          ref="pageView"
+          :page-size-opts="this.pageModel.pageNums"
+          :total="this.pageModel.totalCount"
+          :current="this.pageModel.currentPage"
+          :page-size="this.pageModel.pageCount"
+          placement="top"
+          @on-change="onPageChange()"
+          @on-page-size-change="onPageChange()"
+          show-sizer
+        />
+    </Row>
   </div>
 </template>
 
@@ -53,6 +67,13 @@
 
     data() {
       return {
+        pageModel: {
+          totalCount: 1000,
+          pageCount: 20,
+          currentPage: 1,
+          pageNums: [20, 30, 50, 80, 100]
+        },
+
         formModel: {
           type: 'all',
           roleId: '',
@@ -117,6 +138,13 @@
     },
 
     methods: {
+      onPageChange() {
+        this.pageModel.currentPage = this.$refs.pageView.currentPage;
+        this.pageModel.pageCount = this.$refs.pageView.currentPageSize;
+        this.handleSubmit();
+      },
+
+
       fetchOperateList() {
         this.operateList = [];
         let moneyNames = ["金币","USDT","KAD","KEY","购买名额","加速积分","海豚金币"];
@@ -158,8 +186,8 @@
             body: {
             username: services.getUser().username,
             platform: services.getUser().platform,
-            page:1,
-            pageSize:300,
+            page:this.pageModel.currentPage,
+            pageSize:this.pageModel.pageCount,
             type:selectType,
             playerId:playerId,
             mobile:mobile
