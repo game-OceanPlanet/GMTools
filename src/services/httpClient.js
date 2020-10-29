@@ -6,7 +6,7 @@ var request = require('request')
 // const loginGmtAddress = "http://www.siychina.com:10088/";
 //  const loginGmtAddress = "http://192.168.1.36:10088/";
 // const loginGmtAddress = "http://129.226.177.253:10088/";
-const loginGmtAddress = "http://101.32.204.106:10088/";
+const loginGmtAddress = "http://101.32.206.205:10088/";
 // const loginGmtAddress = "http://129.226.177.253:10088/";
 
 export const getHttpClient = function () {

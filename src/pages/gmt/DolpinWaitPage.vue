@@ -54,10 +54,10 @@
     data() {
       return {
         pageModel: {
-          totalCount: 1000,
-          pageCount: 20,
+          totalCount: 2000,
+          pageCount: 100,
           currentPage: 1,
-          pageNums: [20, 30, 50, 80, 100]
+          pageNums: [100, 120, 150, 180, 200]
         },
 
         formModel: {

@@ -32,8 +32,8 @@
         <Input v-model="verPasswd" placeholder="请输入审核提现的密码"></Input>
       </div>
       <div slot="footer" style="text-align: center">
-        <Button type="primary" style="margin-right: 20px" @click="handleAlertSure">确认</Button>
-        <Button type="error" style="margin-left: 20px" @click="refreshApplyCon">取消</Button>
+        <Button type="primary" style="margin-right: 20px" @click="handleAlertSure">通过</Button>
+        <Button type="error" style="margin-left: 20px" @click="refreshApplyCon">拒绝</Button>
       </div>
     </Modal>
      <br>
@@ -95,11 +95,11 @@
             key: 'PlayerId',
             align: 'center',
           },
-          {
-            title: 'ID',
-            key: 'Id',
-            align: 'center',
-          },
+          // {
+          //   title: 'ID',
+          //   key: 'Id',
+          //   align: 'center',
+          // },
           {
             title: '手机',
             key: 'Mobile',
@@ -168,25 +168,7 @@
                       }
                     }
                   },
-                  "通过"
-                ),
-                h(
-                  "Button",
-                  {
-                    props: {
-                      type: "error",
-                      size: "small"
-                    },
-                    style: {
-                      marginRight: "8px"
-                    },
-                    on: {
-                      click: () => {
-                        this.refuseApply(params.index);
-                      }
-                    }
-                  },
-                  "拒绝"
+                  "审核"
                 )
               ]);
             }
@@ -240,7 +222,7 @@
             }
 
             this.$Message.success('通过审核成功');
-            this.handleSubmit();
+            itemData.State = 3;
             });
       },
 
@@ -251,7 +233,7 @@
 
         refuseApply(index){
             this.showAlert = true;
-          this.currSelectedIndex = index;
+            this.currSelectedIndex = index;
         },
 
         refreshApplyCon(){
@@ -261,6 +243,7 @@
         //     this.$Message.error('请输入审核密码');
         //     return;
         //  }
+          let pwd = this.verPasswd;
           let itemData = this.tableRows[index];
             services.getHttpClient().post({
             url: '/dragon/cashOutOrderCheck',
@@ -270,7 +253,7 @@
                 id: itemData.Id,
                 playerId: itemData.PlayerId,
                 check: 0,
-                password:"1"
+                password:pwd
             }
             }, (error, response, body) => {
             if (error) {
@@ -278,12 +261,13 @@
                 return;
             }
 
-            if (body.code != 0) {
-                this.$Message.error("提交失败，请检查配置,错误码："+body.code);
-                return;
-            }
+            // if (body.code != 0) {
+            //     this.$Message.error("提交失败，请检查配置,错误码："+body.code);
+            //     return;
+            // }
 
             this.$Message.success('拒绝审核成功');
+            itemData.State = 2;
             });
         },
 
@@ -338,10 +322,10 @@
             return;
           }
 
-          if (body.code != 0) {
-            this.$Message.error("参数输入错误，请重新输入。错误码："+body.code);
-            return;
-          }
+          // if (body.code != 0) {
+          //   this.$Message.error("参数输入错误，请重新输入。错误码："+body.code);
+          //   return;
+          // }
 
           this.fillData(body.msg.value);
         });
